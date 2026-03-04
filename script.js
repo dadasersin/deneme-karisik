@@ -15,16 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Login Logic
     function handleLogin() {
         if (accessKeyInput.value === ACCESS_KEY) {
-            loginOverlay.classList.add('hidden');
-            appContainer.classList.remove('hidden');
-            // Play a startup sound simulation or animation if needed
-            console.log("System Initialized...");
+            loginOverlay.style.opacity = '0';
+            setTimeout(() => {
+                loginOverlay.classList.add('hidden');
+                appContainer.classList.remove('hidden');
+                // Re-initialize Lucide for the newly visible content
+                if (window.lucide) window.lucide.createIcons();
+            }, 500);
         } else {
             accessKeyInput.style.borderColor = '#ef4444';
-            accessKeyInput.classList.add('shake');
             setTimeout(() => {
-                accessKeyInput.classList.remove('shake');
-                accessKeyInput.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                accessKeyInput.style.borderColor = 'rgba(16, 185, 129, 0.2)';
             }, 500);
             accessKeyInput.value = '';
         }
@@ -46,17 +47,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update Content State
             tabContents.forEach(tab => {
-                tab.classList.remove('active');
                 tab.classList.add('hidden');
                 if (tab.id === `tab-${targetTab}`) {
-                    tab.classList.add('active');
                     tab.classList.remove('hidden');
+                    // Special case for chat scroll
+                    if (targetTab === 'nexus') {
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }
                 }
             });
+
+            if (window.lucide) window.lucide.createIcons();
         });
     });
 
-    // Simple Chat Simulation
+    // Chat Simulation
     function addMessage(text, sender) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${sender}`;
@@ -65,24 +70,24 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function handleChat() {
+    async function handleChat() {
         const text = chatInput.value.trim();
         if (text) {
             addMessage(text, 'user');
             chatInput.value = '';
 
-            // AI Response logic
+            // Simulated AI processing
             setTimeout(() => {
                 const aiResponses = [
-                    "Anlaşıldı. Belleğe kaydediliyor...",
-                    "Sistem metrikleri optimize ediliyor.",
-                    "Kod yapısı analiz edildi. Hata bulunamadı.",
-                    "Yeni bir projeye başlamak ister misiniz?",
-                    "Sinir ağı durumu: Stabil."
+                    "Neural katmanlar optimize ediliyor. İşlem başarılı.",
+                    "Bellek haritası güncellendi. Yeni veri girişi algılandı.",
+                    "Sistem stabilitesi %98 seviyesinde. Tüm modüller aktif.",
+                    "Geliştirici modu: Aktif. Kod blokları analiz ediliyor.",
+                    "Bağlantı protokolü güvenli. İşleme devam edebilirsiniz."
                 ];
                 const randomResp = aiResponses[Math.floor(Math.random() * aiResponses.length)];
                 addMessage(randomResp, 'ai');
-            }, 600);
+            }, 800);
         }
     }
 
@@ -91,16 +96,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') handleChat();
     });
 
-    // Dynamic System Health Simulation
+    // Dynamic Updates for Progress Charts
     setInterval(() => {
-        const fills = document.querySelectorAll('.progress-box .fill, .status-bar .fill');
-        fills.forEach(fill => {
-            const currentWidth = parseInt(fill.style.width);
-            const variation = Math.floor(Math.random() * 5) - 2; // -2 to +2
-            let newWidth = currentWidth + variation;
-            if (newWidth > 100) newWidth = 100;
-            if (newWidth < 20) newWidth = 20;
-            fill.style.width = `${newWidth}%`;
+        const circle = document.querySelector('.circle-fill');
+        if (circle) {
+            const randomPercent = Math.floor(Math.random() * 10) + 80; // 80-90%
+            circle.setAttribute('stroke-dasharray', `${randomPercent}, 100`);
+            const percentageText = document.querySelector('.percentage');
+            if (percentageText) percentageText.innerText = `${randomPercent}%`;
+        }
+
+        const mFills = document.querySelectorAll('.m-fill');
+        mFills.forEach(fill => {
+            const base = parseInt(fill.style.width);
+            const variation = Math.floor(Math.random() * 4) - 2;
+            fill.style.width = Math.min(100, Math.max(70, base + variation)) + '%';
         });
     }, 3000);
 });
