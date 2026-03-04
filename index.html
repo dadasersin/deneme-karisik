@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI | Developer Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Security Protocol (Login) -->
+    <div id="login-overlay" class="overlay">
+        <div class="login-card glass">
+            <div class="security-header">
+                <div class="status-dot pulse-green"></div>
+                <span>NEXUS_ADMIN_AUTHORIZATION</span>
+            </div>
+            <h1>ERİŞİM PROTOKOLÜ</h1>
+            <p>Sistemi başlatmak için erişim anahtarını girin.</p>
+            <div class="input-group">
+                <input type="password" id="access-key" placeholder="ACCESS_KEY" maxlength="4">
+                <div class="input-glow"></div>
+            </div>
+            <button id="login-btn" class="btn-primary">SİSTEMİ BAŞLAT</button>
+            <div class="security-footer">GÜVENLİ BAĞLANTI AKTİF</div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="app-container" class="hidden">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <span>NEXUS</span>
+            </div>
+            <div class="nav-items">
+                <button class="nav-item active" data-tab="panel">
+                    <span class="icon">📊</span> Panel
+                </button>
+                <button class="nav-item" data-tab="nexus">
+                    <span class="icon">🧠</span> Nexus AI
+                </button>
+                <button class="nav-item" data-tab="editor">
+                    <span class="icon">💻</span> Editor
+                </button>
+                <button class="nav-item" data-tab="memory">
+                    <span class="icon">💾</span> Bellek
+                </button>
+            </div>
+            <div class="system-status">
+                <div class="status-label">SİSTEM DURUMU</div>
+                <div class="status-bar">
+                    <div class="fill" style="width: 92%;"></div>
+                </div>
+                <div class="status-text">92% PERFORMANCE</div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="content">
+            <header class="top-bar glass">
+                <div class="breadcrumb">SYSTEM / ROOT / DASHBOARD</div>
+                <div class="user-profile">
+                    <span class="user-role">ADMIN</span>
+                    <div class="avatar"></div>
+                </div>
+            </header>
+
+            <!-- Tab Contents -->
+            <section id="tab-panel" class="tab-content active">
+                <div class="grid-layout">
+                    <div class="card glass tall">
+                        <h3>SİSTEM SAĞLIĞI</h3>
+                        <div class="stat-group">
+                            <label>Sinir Sistemi</label>
+                            <div class="progress-box">
+                                <div class="fill pulse-green" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="stat-group">
+                            <label>Mantık Motoru</label>
+                            <div class="progress-box">
+                                <div class="fill pulse-cyan" style="width: 94%;"></div>
+                            </div>
+                        </div>
+                        <div class="stat-group">
+                            <label>API Kotası</label>
+                            <div class="progress-box">
+                                <div class="fill pulse-amber" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card glass">
+                        <h3>AKTİF BELLEK</h3>
+                        <ul class="memory-list">
+                            <li><span>FACT:</span> Kullanıcı koyu modu tercih ediyor.</li>
+                            <li><span>GOAL:</span> Proje mimarisi optimizasyonu.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-nexus" class="tab-content hidden">
+                <div class="chat-container glass">
+                    <div class="chat-messages" id="chat-box">
+                        <div class="message ai">Nexus AI çevrimiçi. Size nasıl yardımcı olabilirim?</div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" placeholder="Nexus'a bir şey sor...">
+                        <button id="send-btn">GÖNDER</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-editor" class="tab-content hidden">
+                <div class="editor-layout">
+                    <div class="file-explorer glass">
+                        <div class="explorer-header">DOSYALAR</div>
+                        <ul class="file-list">
+                            <li class="active"><span class="icon">📄</span> index.html</li>
+                            <li><span class="icon">🎨</span> styles.css</li>
+                            <li><span class="icon">📜</span> script.js</li>
+                            <li><span class="icon">📦</span> package.json</li>
+                        </ul>
+                    </div>
+                    <div class="main-editor-area">
+                        <div class="code-editor glass">
+                            <div class="editor-header">index.html <span class="tab-close">×</span></div>
+                            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Cyber Project&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello Nexus&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                        <div class="terminal glass">
+                            <div class="terminal-header">TERMINAL</div>
+                            <div class="terminal-body">
+                                <span class="term-line">> npm run build</span>
+                                <span class="term-line success">Build success in 1.2s.</span>
+                                <span class="term-line">> nexus status --active</span>
+                                <span class="term-line">System: STABLE</span>
+                                <span class="term-line active-cursor">_</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-memory" class="tab-content hidden">
+                <div class="memory-grid">
+                    <div class="card glass">
+                        <h3>🧠 GERÇEKLER (FACTS)</h3>
+                        <ul class="memory-list">
+                            <li>Proje adı: Nexus Dashboard</li>
+                            <li>Mimari: Vanilla HTML/CSS/JS</li>
+                            <li>Konum: Localhost:3000</li>
+                        </ul>
+                    </div>
+                    <div class="card glass">
+                        <h3>🛠️ TERCİHLER</h3>
+                        <ul class="memory-list">
+                            <li>Tema: Dark Knight</li>
+                            <li>Vurgu Rengi: Zümrüt Yeşili</li>
+                            <li>Font: Inter & Fira Code</li>
+                        </ul>
+                    </div>
+                    <div class="card glass">
+                        <h3>🎯 HEDEFLER</h3>
+                        <ul class="memory-list">
+                            <li>AI Entegrasyonu tamamlanacak</li>
+                            <li>Terminal komutları aktif edilecek</li>
+                            <li>Görsel optimizasyon yapılacak</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
