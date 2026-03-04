@@ -239,11 +239,23 @@ h3 {
     text-align: center;
 }
 
-/* Dairesel Grafik */
+/* Dairesel Grafik ve Metrikler */
 .circular-progress {
-    width: 220px;
+    width: 200px;
     position: relative;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.circular-label {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+    opacity: 0.7;
+    white-space: nowrap;
 }
 
 svg {
@@ -262,6 +274,7 @@ svg {
     stroke-width: 3;
     stroke-linecap: round;
     filter: drop-shadow(0 0 10px var(--accent));
+    transition: 1s ease-out;
 }
 
 .percent {
@@ -272,6 +285,98 @@ svg {
     font-size: 2.5rem;
     font-weight: 900;
     color: var(--accent);
+}
+
+.metrics-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.metric-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.m-label {
+    font-size: 0.65rem;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.m-value {
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Fira Code', monospace;
+}
+
+.color-green {
+    color: var(--accent);
+}
+
+.pulse-text {
+    color: var(--accent);
+    animation: textPulse 2s infinite;
+}
+
+@keyframes textPulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* API Kotası Kutusu */
+.api-quota-box {
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(16, 185, 129, 0.03) !important;
+}
+
+.quota-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.quota-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.quota-fill {
+    height: 100%;
+    background: var(--accent);
+    box-shadow: 0 0 15px var(--accent);
+}
+
+.quota-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    opacity: 0.6;
 }
 
 /* Liste Öğeleri */

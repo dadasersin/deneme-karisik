@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(() => {
         const circle = document.querySelector('.circle-fill');
         if (circle) {
-            const randomPercent = Math.floor(Math.random() * 8) + 88; // %88-96 arası volatilite
+            const randomPercent = Math.floor(Math.random() * 5) + 80; // %80-85 arası volatilite (Beyin Kapasitesi hedef %82)
             circle.setAttribute('stroke-dasharray', `${randomPercent}, 100`);
             const percentageText = document.querySelector('.percent');
             if (percentageText) percentageText.innerText = `${randomPercent}%`;
