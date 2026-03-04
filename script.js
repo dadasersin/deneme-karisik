@@ -79,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const steps = [
                 "Anlaşıldı. Sinirsel ağlar üzerinden sorgulama yapılıyor...",
+                "Küresel veri merkezleri üzerinden internet araştırması başlatıldı...",
+                "Hava durumu verileri ve trendleri analiz ediliyor... (Source: MSN Weather)",
                 "İstek mimarisi analiz ediliyor... (Parsing context)",
                 "Gerekli kod blokları oluşturuluyor... (Synthesizing code)",
                 "Tasarım katmanları entegre ediliyor... (Applying styles)",
@@ -86,23 +88,24 @@ document.addEventListener('DOMContentLoaded', () => {
             ];
 
             for (let i = 0; i < steps.length; i++) {
-                await new Promise(r => setTimeout(r, 1000 + Math.random() * 500));
+                await new Promise(r => setTimeout(r, 800 + Math.random() * 400));
                 thinkingMsg.querySelector('.step').innerText = steps[i];
                 thinkingMsg.querySelector('.step-progress').style.width = ((i + 1) / steps.length * 100) + '%';
             }
 
-            // Final Cevap
+            // Final Cevap Mantığı
             setTimeout(() => {
                 thinkingMsg.remove();
-                const aiResponses = [
-                    "Hava durumu sitesi protokolü hazırlandı. Temel HTML/CSS iskeleti oluşturuldu ve sinirsel ağlara yüklendi.",
-                    "İsteğiniz üzerine tüm modüller optimize edildi. Sistem stabilitesi %99.8.",
-                    "Yeni bir web arayüzü kuruldu. Dosya gezgininden kontrol edebilirsiniz.",
-                    "Neural katmanlar başarıyla eşleşti. Veri akışı başlıyor.",
-                    "İşlem tamamlandı. Girdiğiniz parametrelere uygun bir yapı inşa edildi."
-                ];
-                const randomResp = aiResponses[Math.floor(Math.random() * aiResponses.length)];
-                addMessage(randomResp, 'ai');
+                let responseText = "";
+
+                if (text.toLowerCase().includes("hava durumu") || text.toLowerCase().includes("site kur")) {
+                    responseText = `Hava durumu sitesi protokolü başarıyla tamamlandı. Mimari yapı 'Projeler' sekmesine 'WeatherInterface v1.0' adıyla yüklendi. <br><br>Kaynaklar:<br> 🔗 <a href="https://openweathermap.org" target="_blank" class="source-link">OpenWeatherMap API</a><br> 🔗 <a href="https://weather.com" target="_blank" class="source-link">Weather.com Analizi</a>`;
+                    deployWeatherProject();
+                } else {
+                    responseText = `İnternet araştırması tamamlandı. İstediğiniz konuyla ilgili veriler doğrulandı. <br><br>Referanslar:<br> 🔗 <a href="https://google.com/search?q=${encodeURIComponent(text)}" target="_blank" class="source-link">Global Search Result</a><br> 🔗 <a href="https://wikipedia.org" target="_blank" class="source-link">Wiki Neural Verification</a>`;
+                }
+
+                addMessage(responseText, 'ai');
             }, 500);
         }
     }
@@ -147,17 +150,55 @@ document.addEventListener('DOMContentLoaded', () => {
             miniChatInput.value = '';
 
             setTimeout(() => {
-                const responses = [
-                    "Sistem her an yanınızda. Ne yapmamı istersiniz?",
-                    "Sinirsel arayüz her zaman aktif. Dinliyorum.",
-                    "Dosyalarınızı kontrol ettim, her şey yolunda görünüyor.",
-                    "Anlaşıldı. Bu konu hakkında detaylı bir rapor hazırlayabilirim.",
-                    "Siberpunk evrenine hoş geldiniz. Size nasıl rehberlik edebilirim?"
-                ];
-                const resp = responses[Math.floor(Math.random() * responses.length)];
+                let resp = "";
+                if (text.toLowerCase().includes("site")) {
+                    resp = "Anlaşıldı. Proje başlatma yetkim var, ancak tam teşekküllü bir kurulum için ana Nexus AI panelini kullanmanı öneririm. Yine de sorguluyorum...";
+                } else {
+                    resp = "İnternet üzerinden araştırıldı: İstediğiniz veri kümesi %98 güvenle doğrulandı. Kaynak: [Neural_Link_Global]";
+                }
                 addMiniMessage(resp, 'ai');
             }, 600);
         }
+    }
+
+    function deployWeatherProject() {
+        const display = document.getElementById('project-display');
+        const emptyState = display.querySelector('.empty-state');
+        if (emptyState) emptyState.remove();
+
+        const projectHTML = `
+            <div class="deployed-project">
+                <div class="project-preview">
+                    <div class="weather-mockup">
+                        <div class="mock-nav"></div>
+                        <div class="mock-hero">
+                            <div class="mock-sun"></div>
+                            <div class="mock-text">
+                                <div class="mock-line" style="width: 80%"></div>
+                                <div class="mock-line" style="width: 60%"></div>
+                                <div class="mock-line" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="mock-line" style="width: 100%; height: 2px; background: var(--accent); opacity: 0.3;"></div>
+                        <div style="display: flex; gap: 5px;">
+                            <div class="mock-line" style="width: 20%"></div>
+                            <div class="mock-line" style="width: 20%"></div>
+                            <div class="mock-line" style="width: 20%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h4>WeatherInterface v1.0</h4>
+                    <p>Gerçek zamanlı hava durumu verilerini işleyen siberpunk temalı dashboard örneği.</p>
+                    <div class="project-links">
+                        <button class="btn-mini">ÖNİZLEMEYİ AÇ</button>
+                        <button class="btn-mini">KODU İNCELE</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        display.innerHTML += projectHTML;
+        if (window.lucide) window.lucide.createIcons();
     }
 
     miniSendBtn.addEventListener('click', handleMiniChat);

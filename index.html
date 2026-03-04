@@ -58,6 +58,9 @@
                             <button class="nav-item" data-tab="memory">
                                 <i data-lucide="database"></i> Bellek
                             </button>
+                            <button class="nav-item" data-tab="projects">
+                                <i data-lucide="folder-kanban"></i> Projeler
+                            </button>
                             <button class="nav-item" data-tab="guide">
                                 <i data-lucide="book-open"></i> Kılavuz
                             </button>
@@ -198,6 +201,23 @@
                                     <div class="chat-footer">
                                         <input type="text" id="chat-input" placeholder="Nexus ile iletişime geç...">
                                         <button id="send-btn"><i data-lucide="send"></i></button>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- PROJELER -->
+                            <section id="tab-projects" class="tab-content hidden">
+                                <div class="card glass project-card">
+                                    <div class="card-header">
+                                        <i data-lucide="terminal"></i>
+                                        <h3>OLUŞTURULAN PROJELER</h3>
+                                    </div>
+                                    <div id="project-display" class="project-grid">
+                                        <div class="empty-state">
+                                            <i data-lucide="cpu"></i>
+                                            <p>Henüz bir proje oluşturulmadı. Nexus AI'dan bir web sitesi kurmasını
+                                                isteyin.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </section>
