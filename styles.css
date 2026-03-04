@@ -510,9 +510,34 @@ svg {
     width: 80%;
 }
 
-.ai {
-    background: rgba(16, 185, 129, 0.05);
-    border-left: 3px solid var(--accent);
+.ai.thinking {
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(16, 185, 129, 0.05) !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+.status-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.step {
+    font-size: 0.85rem;
+    font-family: 'Fira Code', monospace;
+    color: var(--accent);
+    letter-spacing: 1px;
+}
+
+.step-progress {
+    height: 2px;
+    background: var(--accent);
+    width: 0;
+    transition: 0.5s ease;
+    box-shadow: 0 0 10px var(--accent);
 }
 
 .chat-footer {
@@ -591,4 +616,135 @@ svg {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--accent);
+}
+
+/* Yüzen Sohbet Botu (Nexus Mini) Stilleri */
+#floating-bot-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 10000;
+}
+
+#floating-bot-trigger {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: none;
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 0 20px var(--accent-glow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#floating-bot-trigger:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 0 40px var(--accent);
+}
+
+.pulse-glow {
+    animation: floatingPulse 2s infinite;
+}
+
+@keyframes floatingPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+#mini-chat-window {
+    position: absolute;
+    bottom: 85px;
+    right: 0;
+    width: 350px;
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--accent);
+    transform-origin: bottom right;
+    transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#mini-chat-window.hidden {
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none;
+}
+
+.mini-chat-header {
+    padding: 1rem;
+    background: rgba(16, 185, 129, 0.1);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px 12px 0 0;
+}
+
+.mini-chat-header span {
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--accent);
+}
+
+#close-mini-chat {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.mini-chat-body {
+    flex-grow: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    font-size: 0.85rem;
+}
+
+.mini-chat-body .msg {
+    width: 90%;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+}
+
+.mini-chat-footer {
+    padding: 1rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+}
+
+.mini-chat-footer input {
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border);
+    padding: 0.7rem;
+    color: white;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.mini-chat-footer button {
+    background: var(--accent);
+    border: none;
+    padding: 0 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    color: black;
 }

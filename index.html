@@ -243,6 +243,27 @@
         </div>
     </div>
 
+    <!-- Yüzen Sohbet Botu (Nexus Mini) -->
+    <div id="floating-bot-container">
+        <div id="mini-chat-window" class="glass hidden">
+            <div class="mini-chat-header">
+                <i data-lucide="bot"></i>
+                <span>NEXUS MİNİ</span>
+                <button id="close-mini-chat"><i data-lucide="x"></i></button>
+            </div>
+            <div id="mini-chat-box" class="mini-chat-body">
+                <div class="msg ai">Merhaba! Ben Nexus Mini. Size nasıl yardımcı olabilirim?</div>
+            </div>
+            <div class="mini-chat-footer">
+                <input type="text" id="mini-chat-input" placeholder="Bir şeyler sor...">
+                <button id="mini-send-btn"><i data-lucide="send"></i></button>
+            </div>
+        </div>
+        <button id="floating-bot-trigger" class="pulse-glow">
+            <i data-lucide="message-circle"></i>
+        </button>
+    </div>
+
     <script src="script.js"></script>
     <script>lucide.createIcons();</script>
 </body>

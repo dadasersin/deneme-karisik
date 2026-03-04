@@ -2,33 +2,30 @@
 
 İstediğiniz Nexus AI görsel estetiğini Replit ve Bolt.new'un profesyonel araçlarıyla birleştirip, sağladığınız mockup görseline tam uyumlu hale getirdik.
 
-## 🚀 Geliştirmeler
+## 🚀 Öne Çıkan Özellikler
 
-### 1. Mockup ile Tam Uyum (Endüstriyel Çerçeve)
-- **Dış Kasa**: Arayüz artık mockup'taki gibi metalik bir endüstriyel çerçeve (industrial frame) içerisindedir.
-- **Detaylar**: Cıvatalar, parlayan durum barları ve bezel (kenarlık) yapısı mockup'a sadık kalarak tasarlandı.
-- **Dairesel Metrikler**: Sistem sağlığı göstergesi mockup'taki gibi şık bir dairesel grafik yapısına kavuştu.
+### 1. Mockup ile Tam Uyum (Endüstriyel Tasarım)
+- **Profesyonel Arayüz**: Arayüz, mockup'taki gibi metalik bir endüstriyel çerçeve ve bezel yapısı içerisindedir.
+- **Detaylı Metrikler**: İşlem Süresi (4.2s), Sinir Sistemi (%24), Beyin Kapasitesi (%82) gibi tüm gerçek zamanlı metrikler entegre edildi.
+- **API Kotası**: Kullanılan 300 / Kalan 1.2k API istatistiklerini gösteren dinamik durum barı.
 
-### 2. Türkçe Yerelleştirme
-- Arayüzdeki tüm metinler, menüler ve uyarılar tamamen Türkçe'ye çevrilmiştir.
+### 2. Gelişmiş AI Etkileşimi
+- **Nexus AI & Mini**: Hem ana panelde hem de her sayfada yanınızda olan yüzen bir sohbet botu (Nexus Mini).
+- **İşlem Aşamaları**: AI bir talep aldığında Analiz, Kodlama ve Hizalama gibi teknik adımları canlı olarak raporlar.
 
-### 3. Kullanım Kılavuzu
-- Sistemin her bir özelliğinin ne işe yaradığını anlatan interaktif bir "Kılavuz" sekmesi eklendi.
+### 3. Kullanıcı Dostu
+- **Tam Türkçe**: %100 Türkçe yerelleştirme.
+- **Kılavuz**: Her özelliğin ne işe yaradığını anlatan interaktif kullanım kılavuzu.
 
-### 4. Teknik Altyapı
-- **Render Desteği**: Node.js/Express tabanlı sunucu altyapısı mevcuttur.
-- **GitHub Hazır**: Proje yerel Git deposunda commit edilmiş haldedir.
+## 🛠️ Kurulum ve Çalıştırma
 
-## 🛠️ Kurulum ve Kullanım
+1. `npm install` ile bağımlılıkları yükleyin.
+2. `npm start` ile sistemi başlatın.
+3. Tarayıcıdan `http://localhost:3000` adresine girin.
+4. Sisteme giriş için erişim anahtarı: `0000`
 
-1. `npm install` komutu ile bağımlılıkları yükleyin.
-2. `npm start` komutu ile sunucuyu başlatın.
-3. Tarayıcınızda `http://localhost:3000` adresine gidin.
-4. Erişim Protokolü ekranına `0000` yazarak sisteme girin.
-
-## 📦 Dosya Yapısı
-- `index.html`: Ana arayüz yapısı.
-- `styles.css`: Tasarım ve animasyonlar.
-- `script.js`: Dinamik mantık ve etkileşimler.
-- `server.js`: Node.js sunucusu.
-- `TEKNIK_REHBER.md`: Geliştirme aşamaları detayları.
+## 📦 Proje İçeriği
+- `index.html`: Ana neural arayüz yapısı.
+- `styles.css`: Siberpunk & Industrial tasarım sistemi.
+- `script.js`: Dinamik mantık ve AI asistan protokolü.
+- `TEKNIK_REHBER.md`: Mimari ve geliştirme aşamaları detayları.

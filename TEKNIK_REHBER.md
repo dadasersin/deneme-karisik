@@ -5,26 +5,24 @@ Bu döküman, Nexus AI projesinin sıfırdan son aşamaya kadar olan teknik geli
 ## 🚀 Geliştirme Aşamaları
 
 ### Aşama 1: Temel Mimari ve Ortam Kurulumu
-- Proje, Render.com üzerinde sorunsuz çalışması için Node.js tabanlı bir Express sunucusu (`server.js`) üzerine kuruldu.
-- Vanilla HTML, CSS ve JS seçilerek en yüksek performans ve kontrol sağlandı.
+Node.js/Express tabanlı bir yapı üzerine inşa edilen sistem, Render.com gibi bulut platformlarına hazır hale getirildi.
 
-### Aşama 2: Tasarım Sistemi ve Siberpunk Estetiği (UI/UX)
-- **Glassmorphism**: `backdrop-filter: blur(20px)` kullanılarak modern, şeffaf bir arayüz dili oluşturuldu.
-- **Cinematic Lighting**: CSS değişkenleri üzerinden yönetilen neon parlamalar (`--accent-glow`) ile siberpunk teması güçlendirildi.
+### Aşama 2: Tasarım Sistemi (Siberpunk & Industrial)
+- **Metalik Çerçeve**: Mockup görselindeki endüstriyel hissi vermek için özel CSS çerçeve yapıları oluşturuldu.
+- **Neon Glow**: `--accent-glow` değişkenleri ile cinematic bir aydınlatma sağlandı.
 
-### Aşama 3: Gelişmiş UI Bileşenleri (Mockup Uyumu)
-- **Lucide Icons**: Profesyonel bir görünüm için endüstri standardı olan Lucide ikonları entegre edildi.
-- **Dairesel Grafik Sistemi**: Sistem sağlığını gösteren dinamik SVG grafikler, `stroke-dasharray` ve asenkron JS fonksiyonları ile canlandırıldı.
-- **Animasyonlar**: `scanning-line` (tarama hattı) ve `pulse-green` (nabız) gibi animasyonlarla arayüzün "yaşadığı" hissi verildi.
+### Aşama 3: Gelişmiş Metrik Sistemleri
+- **SVG Grafik**: Beyin kapasitesi ve sinir sistemi verileri için asenkron güncellenen SVG dairesel grafikler eklendi.
+- **Dinamik Veri Akışı**: API kotaları ve çalışma süreleri gerçeğe yakın bir simülasyonla canlandırıldı.
 
-### Aşama 4: AI Simülasyonu ve Etkileşim
-- Kullanıcı girişlerini dinleyen asenkron bir asistan protokolü (`handleChat`) oluşturuldu.
-- Sistemin her 3 saniyede bir metriklerini (sağlık, yük vb.) güncellediği dinamik bir döngü kuruldu.
+### Aşama 4: AI Etkileşim Protokolü
+- **Aşamalı Yanıt Sistemi**: AI artık bir istek aldığında "Analiz ediliyor", "Kodlar üretiliyor" gibi teknik aşamaları yükleme barı ile gösteriyor.
+- **Nexus Mini**: Her sayfada aktif olan yüzen bir sohbet botu (Floating Bot) entegre edildi.
 
 ---
 
 ## 🛠️ Teknik Analiz
 
-- **Performans**: Sıfır dış kütüphane bağımlılığı (ikonlar hariç) sayesinde anında yükleme süresi.
-- **Genişletilebilirlik**: Kod yapısı, gerçek bir yapay zeka API'si (Gemini/ChatGPT) bağlanmasına uygun bir altyapı sunar.
-- **Dağıtım**: Git tabanlı dağıtım sistemi (Render) için gerekli tüm yapılandırmalar (`package.json`) hazırlandı.
+- **Performans**: Vanilla JS kullanımı sayesinde sıfır gecikme.
+- **Esneklik**: Her türlü gerçek AI API'sine (Gemini, OpenAI vb.) kolayca bağlanabilir yapı.
+- **Yerelleştirme**: Tamamen Türkçe dil desteği ve yerel kültüre uygun terimler.
