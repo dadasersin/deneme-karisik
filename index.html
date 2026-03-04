@@ -91,56 +91,71 @@
                             <section id="tab-panel" class="tab-content active">
                                 <div class="grid-layout">
                                     <div class="card glass health-section">
-                                        <h3>SİSTEM SAĞLIĞI</h3>
-                                        <div class="health-flex">
-                                            <div class="circular-progress">
-                                                <svg viewBox="0 0 36 36">
-                                                    <path class="circle-bg"
-                                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                    <path class="circle-fill" stroke-dasharray="82, 100"
-                                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                                </svg>
-                                                <div class="percent">82%</div>
-                                                <div class="circular-label">Beyin Kapasitesi</div>
+                                        <div class="card-header">
+                                            <i data-lucide="activity"></i>
+                                            <h3>SİSTEM SAĞLIĞI (SYSTEM HEALTH)</h3>
+                                        </div>
+
+                                        <div class="health-main">
+                                            <div class="circular-container">
+                                                <div class="circular-progress brain-cap">
+                                                    <svg viewBox="0 0 36 36">
+                                                        <path class="circle-bg"
+                                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                        <path class="circle-fill" stroke-dasharray="82, 100"
+                                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                    </svg>
+                                                    <div class="percent">82%</div>
+                                                    <div class="circular-label">Beyin Kapasitesi</div>
+                                                </div>
+
+                                                <div class="circular-progress neural-sys">
+                                                    <svg viewBox="0 0 36 36">
+                                                        <path class="circle-bg"
+                                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                        <path class="circle-fill" stroke-dasharray="24, 100"
+                                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                    </svg>
+                                                    <div class="percent mini">24%</div>
+                                                    <div class="circular-label">Sinir Sistemi</div>
+                                                </div>
                                             </div>
-                                            <div class="metrics-grid">
-                                                <div class="metric-item">
-                                                    <span class="m-label">İşlem Süresi</span>
-                                                    <span class="m-value">4.2s</span>
+
+                                            <div class="stats-grid">
+                                                <div class="stat-box">
+                                                    <span class="s-label">İŞLEM SÜRESİ</span>
+                                                    <span class="s-value">4.2s</span>
                                                 </div>
-                                                <div class="metric-item">
-                                                    <span class="m-label">Kalan Süre</span>
-                                                    <span class="m-value">1.8s</span>
+                                                <div class="stat-box">
+                                                    <span class="s-label">KALAN SÜRE</span>
+                                                    <span class="s-value">1.8s</span>
                                                 </div>
-                                                <div class="metric-item">
-                                                    <span class="m-label">Sinir Sistemi</span>
-                                                    <span class="m-value color-green">24%</span>
+                                                <div class="stat-box">
+                                                    <span class="s-label">MANTIK MOTORU</span>
+                                                    <span class="s-value pulse-text">AKTİF</span>
                                                 </div>
-                                                <div class="metric-item">
-                                                    <span class="m-label">Mantık Motoru</span>
-                                                    <span class="m-value pulse-text">Aktif</span>
+                                                <div class="stat-box">
+                                                    <span class="s-label">ÇALIŞMA SÜRESİ</span>
+                                                    <span class="s-value">14g 5s</span>
                                                 </div>
-                                                <div class="metric-item">
-                                                    <span class="m-label">Çalışma Süresi</span>
-                                                    <span class="m-value">14g 5s</span>
-                                                </div>
-                                                <div class="metric-item">
-                                                    <span class="m-label">Medya Motoru</span>
-                                                    <span class="m-value color-green">Hazır</span>
+                                                <div class="stat-box">
+                                                    <span class="s-label">MEDYA MOTORU</span>
+                                                    <span class="s-value color-green">HAZIR</span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="api-quota-box glass">
-                                            <div class="quota-header">
-                                                <span>API KOTASI</span>
-                                                <span class="quota-total">1.5k Toplam</span>
+
+                                        <div class="quota-container">
+                                            <div class="quota-info">
+                                                <span class="q-label">API KOTASI</span>
+                                                <div class="q-stats">
+                                                    <span class="q-used">Kullanılan: 300</span>
+                                                    <span class="q-rem">Kalan: 1.2k</span>
+                                                </div>
                                             </div>
-                                            <div class="quota-bar">
+                                            <div class="quota-progress">
                                                 <div class="quota-fill" style="width: 20%;"></div>
-                                            </div>
-                                            <div class="quota-stats">
-                                                <span>Kalan: 1.2k</span>
-                                                <span>Kullanılan: 300</span>
+                                                <div class="quota-glow"></div>
                                             </div>
                                         </div>
                                     </div>

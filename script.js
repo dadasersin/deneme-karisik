@@ -88,19 +88,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Dinamik Grafik Çekirdeği
     setInterval(() => {
-        const circle = document.querySelector('.circle-fill');
-        if (circle) {
-            const randomPercent = Math.floor(Math.random() * 5) + 80; // %80-85 arası volatilite (Beyin Kapasitesi hedef %82)
-            circle.setAttribute('stroke-dasharray', `${randomPercent}, 100`);
-            const percentageText = document.querySelector('.percent');
-            if (percentageText) percentageText.innerText = `${randomPercent}%`;
+        // Beyin Kapasitesi (%82 civarı)
+        const brainCircle = document.querySelector('.brain-cap .circle-fill');
+        if (brainCircle) {
+            const drift = Math.floor(Math.random() * 4) - 2;
+            const current = 82 + drift;
+            brainCircle.style.strokeDasharray = `${current}, 100`;
+            document.querySelector('.brain-cap .percent').innerText = `${current}%`;
         }
 
-        const mFills = document.querySelectorAll('.m-fill');
-        mFills.forEach(fill => {
-            const currentVal = parseInt(fill.style.width);
-            const drift = Math.floor(Math.random() * 4) - 2;
-            fill.style.width = Math.min(100, Math.max(75, currentVal + drift)) + '%';
-        });
+        // Sinir Sistemi (%24 civarı)
+        const neuralCircle = document.querySelector('.neural-sys .circle-fill');
+        if (neuralCircle) {
+            const drift = Math.floor(Math.random() * 6) - 3;
+            const current = 24 + drift;
+            neuralCircle.style.strokeDasharray = `${current}, 100`;
+            document.querySelector('.neural-sys .percent').innerText = `${current}%`;
+        }
     }, 4000);
 });
