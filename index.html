@@ -4,27 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI | Neural Interface</title>
+    <title>NEXUS AI | Sinirsel Arayüz</title>
     <link rel="stylesheet" href="styles.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap"
         rel="stylesheet">
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
-    <!-- Security Protocol (Login) -->
     <div id="login-overlay" class="overlay">
         <div class="login-card glass">
             <div class="security-header">
                 <div class="status-dot pulse-green"></div>
-                <span>NEXUS_ADMIN_AUTHORIZATION</span>
+                <span>NEXUS_ADMİN_YETKİLENDİRME</span>
             </div>
-            <h1>ERİŞİM PROTOKÖLÜ</h1>
+            <h1>ERİŞİM PROTOKOLÜ</h1>
             <p>Sistemi başlatmak için erişim anahtarını girin.</p>
             <div class="input-group">
-                <input type="password" id="access-key" placeholder="ACCESS_KEY" maxlength="4">
+                <input type="password" id="access-key" placeholder="ERİŞİM_ANAHTARI" maxlength="4">
                 <div class="input-glow"></div>
             </div>
             <button id="login-btn" class="btn-primary">SİSTEMİ BAŞLAT</button>
@@ -32,182 +30,178 @@
         </div>
     </div>
 
-    <!-- Main Dashboard -->
     <div id="app-container" class="hidden">
-        <div class="dashboard-wrapper">
-            <!-- Sidebar Navigation -->
-            <nav class="sidebar glass">
-                <div class="logo">
-                    <div class="logo-icon"></div>
-                    <span>NEXUS</span>
+        <!-- Siberpunk Metal Çerçeve (Mockup Stili) -->
+        <div class="industrial-frame">
+            <div class="frame-bezel">
+                <div class="bezel-top">
+                    <div class="bolt"></div>
+                    <div class="bolt"></div>
+                    <div class="top-glow-bar"></div>
+                    <div class="bolt"></div>
+                    <div class="bolt"></div>
                 </div>
-                <div class="nav-items">
-                    <button class="nav-item active" data-tab="panel">
-                        <i data-lucide="layout-dashboard"></i> Panel
-                    </button>
-                    <button class="nav-item" data-tab="nexus">
-                        <i data-lucide="cpu"></i> Nexus AI
-                    </button>
-                    <button class="nav-item" data-tab="editor">
-                        <i data-lucide="code-2"></i> Editor
-                    </button>
-                    <button class="nav-item" data-tab="memory">
-                        <i data-lucide="database"></i> Bellek
-                    </button>
-                </div>
-                <div class="system-status">
-                    <div class="status-label">NEURAL LOAD</div>
-                    <div class="status-bar">
-                        <div class="fill" style="width: 92%;"></div>
-                    </div>
-                    <div class="status-text">CORE STABLE</div>
-                </div>
-            </nav>
 
-            <!-- Main Content Area -->
-            <main class="content">
-                <header class="top-bar glass">
-                    <div class="neural-interface-banner">
-                        <i data-lucide="radio" class="pulse-green"></i>
-                        <span class="banner-text">Neural Interface Active</span>
-                        <div class="scanning-line"></div>
-                    </div>
-                    <div class="top-actions">
-                        <i data-lucide="signal" class="icon-small"></i>
-                        <div class="divider"></div>
-                        <i data-lucide="wifi" class="icon-small"></i>
-                        <div class="divider"></div>
-                        <span class="time-display">19:51</span>
-                        <div class="avatar">ID</div>
-                    </div>
-                </header>
+                <div class="frame-content">
+                    <nav class="sidebar glass">
+                        <div class="logo">
+                            <div class="logo-icon"></div>
+                            <span>NEXUS</span>
+                        </div>
+                        <div class="nav-items">
+                            <button class="nav-item active" data-tab="panel">
+                                <i data-lucide="layout-dashboard"></i> Panel
+                            </button>
+                            <button class="nav-item" data-tab="nexus">
+                                <i data-lucide="cpu"></i> Nexus AI
+                            </button>
+                            <button class="nav-item" data-tab="memory">
+                                <i data-lucide="database"></i> Bellek
+                            </button>
+                            <button class="nav-item" data-tab="guide">
+                                <i data-lucide="book-open"></i> Kılavuz
+                            </button>
+                        </div>
+                        <div class="system-status">
+                            <div class="status-label">SİNİRSEL YÜK</div>
+                            <div class="status-bar">
+                                <div class="fill" style="width: 82%;"></div>
+                            </div>
+                            <div class="status-text">ÇEKİRDEK STABİL</div>
+                        </div>
+                    </nav>
 
-                <!-- Tab Contents -->
-                <div class="scroll-area">
-                    <section id="tab-panel" class="tab-content active">
-                        <div class="grid-layout">
-                            <!-- System Health Card -->
-                            <div class="card glass tall health-card">
-                                <h3>SYSTEM HEALTH</h3>
-                                <div class="chart-flex">
-                                    <div class="circular-chart">
-                                        <svg viewBox="0 0 36 36" class="circle-svg">
-                                            <path class="circle-bg"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                            <path class="circle-fill" stroke-dasharray="85, 100"
-                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        </svg>
-                                        <div class="percentage">85%</div>
-                                    </div>
-                                    <div class="mini-metrics">
-                                        <div class="m-item">
-                                            <label>Logic Engine</label>
-                                            <div class="m-bar">
-                                                <div class="m-fill" style="width: 94%;"></div>
+                    <main class="content">
+                        <header class="top-bar glass">
+                            <div class="neural-banner">
+                                <i data-lucide="broadcast" class="pulse-green"></i>
+                                <span class="banner-text">Sinirsel Arayüz Aktif</span>
+                                <div class="scanline"></div>
+                            </div>
+                            <div class="top-info">
+                                <i data-lucide="activity"></i>
+                                <div class="divider"></div>
+                                <span class="clock">22:52</span>
+                                <div class="id-badge">YÖNETİCİ</div>
+                            </div>
+                        </header>
+
+                        <div class="scroll-container">
+                            <!-- PANEL -->
+                            <section id="tab-panel" class="tab-content active">
+                                <div class="grid-layout">
+                                    <div class="card glass health-section">
+                                        <h3>SİSTEM SAĞLIĞI</h3>
+                                        <div class="health-flex">
+                                            <div class="circular-progress">
+                                                <svg viewBox="0 0 36 36">
+                                                    <path class="circle-bg"
+                                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                    <path class="circle-fill" stroke-dasharray="92, 100"
+                                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                </svg>
+                                                <div class="percent">92%</div>
+                                            </div>
+                                            <div class="metrics">
+                                                <div class="m-box"><span>Mantık Motoru</span>
+                                                    <div class="m-line">
+                                                        <div class="m-fill" style="width: 88%;"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="m-box"><span>Bellek Verimi</span>
+                                                    <div class="m-line">
+                                                        <div class="m-fill" style="width: 95%;"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="m-item">
-                                            <label>Connection</label>
-                                            <div class="m-bar">
-                                                <div class="m-fill" style="width: 100%;"></div>
-                                            </div>
+                                    </div>
+
+                                    <div class="card glass memory-section">
+                                        <h3>SİNİRSEL BELLEK</h3>
+                                        <div class="item-list">
+                                            <div class="item active"><i data-lucide="file-json"></i> Kullanıcı Tercih
+                                                Haritası <i data-lucide="chevron-right"></i></div>
+                                            <div class="item"><i data-lucide="zap"></i> Enerji Optimizasyonu <i
+                                                    data-lucide="chevron-right"></i></div>
+                                            <div class="item"><i data-lucide="shield"></i> Güvenlik Katmanı 7 <i
+                                                    data-lucide="chevron-right"></i></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card glass goal-section">
+                                        <h3>AKTİF HEDEFLER</h3>
+                                        <div class="goal"><span class="g-text">Mimari Optimizasyon</span><span
+                                                class="g-tag">Tamamlandı</span></div>
+                                        <div class="goal"><span class="g-text">Sinirsel Haritalama</span><span
+                                                class="g-tag pulse">Aktif</span></div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- AI SOHBET -->
+                            <section id="tab-nexus" class="tab-content hidden">
+                                <div class="chat-wrapper glass">
+                                    <div class="chat-head">
+                                        <span><i data-lucide="message-square"></i> Yapay Zeka Sohbeti</span>
+                                        <div class="head-icons">
+                                            <i data-lucide="mic"></i><i data-lucide="settings"></i>
+                                        </div>
+                                    </div>
+                                    <div class="chat-body" id="chat-box">
+                                        <div class="msg ai">Sistem çevrimiçi. Neural arayüz protokolü hazır. Size nasıl
+                                            yardımcı olabilirim?</div>
+                                    </div>
+                                    <div class="chat-footer">
+                                        <input type="text" id="chat-input" placeholder="Nexus ile iletişime geç...">
+                                        <button id="send-btn"><i data-lucide="send"></i></button>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- KULLANIM KILAVUZU -->
+                            <section id="tab-guide" class="tab-content hidden">
+                                <div class="card glass guide-card">
+                                    <h3>KULLANIM KILAVUZU</h3>
+                                    <div class="guide-content">
+                                        <div class="guide-item">
+                                            <h4>📊 Panel</h4>
+                                            <p>Sistemin genel sağlık durumunu, işlemci yükünü ve aktif hedefleri takip
+                                                ettiğiniz merkezdir.</p>
+                                        </div>
+                                        <div class="guide-item">
+                                            <h4>🧠 Nexus AI</h4>
+                                            <p>Yapay zeka ile doğrudan etkileşim kurduğunuz bölümdür. Analiz, kodlama ve
+                                                veri işleme taleplerinizi buraya yazabilirsiniz.</p>
+                                        </div>
+                                        <div class="guide-item">
+                                            <h4>💾 Bellek</h4>
+                                            <p>AI'nın öğrendiği bilgileri, kullanıcı tercihlerini ve geçmiş etkileşim
+                                                verilerini sakladığı 'Neural Memory' alanıdır.</p>
+                                        </div>
+                                        <div class="guide-item">
+                                            <h4>🔐 Güvenlik</h4>
+                                            <p>Sistem başlangıcında istenen '0000' anahtarı, yetkisiz erişimleri
+                                                engelleyen protokolün bir parçasıdır.</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="wave-visual">
-                                    <div class="wave"></div>
-                                    <div class="wave-overlay"></div>
-                                </div>
-                            </div>
-
-                            <!-- Neural Memory Quick List -->
-                            <div class="card glass memory-quick-card">
-                                <h3>NEURAL MEMORY</h3>
-                                <div class="memory-strip-list">
-                                    <div class="memory-strip active">
-                                        <i data-lucide="file-json"></i>
-                                        <span>UI Preferences Map</span>
-                                        <i data-lucide="chevron-right"></i>
-                                    </div>
-                                    <div class="memory-strip">
-                                        <i data-lucide="trending-up"></i>
-                                        <span>User Behavior Trends</span>
-                                        <i data-lucide="chevron-right"></i>
-                                    </div>
-                                    <div class="memory-strip">
-                                        <i data-lucide="layers"></i>
-                                        <span>Neural Layer Weights</span>
-                                        <i data-lucide="chevron-right"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Network Status / Graph -->
-                            <div class="card glass network-card">
-                                <h3>NEURAL NETWORK</h3>
-                                <div class="network-viz">
-                                    <div class="node-map"></div>
-                                </div>
-                            </div>
+                            </section>
                         </div>
-                    </section>
-
-                    <!-- Nexus AI Chat -->
-                    <section id="tab-nexus" class="tab-content hidden">
-                        <div class="chat-wrapper glass">
-                            <div class="chat-header">
-                                <span class="ai-title"><i data-lucide="cpu"></i> AI Chat</span>
-                                <div class="header-icons">
-                                    <i data-lucide="mic"></i>
-                                    <i data-lucide="message-square"></i>
-                                    <i data-lucide="settings"></i>
-                                </div>
-                            </div>
-                            <div class="chat-messages" id="chat-box">
-                                <div class="message ai">Nexus AI çevrimiçi. Neural interface protokolü aktif edildi.
-                                    Size nasıl yardımcı olabilirim?</div>
-                            </div>
-                            <div class="chat-input-container">
-                                <div class="chat-input-box">
-                                    <input type="text" id="chat-input" placeholder="Nexus ile konuş...">
-                                    <button id="send-btn"><i data-lucide="send"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Editor -->
-                    <section id="tab-editor" class="tab-content hidden">
-                        <div class="editor-container">
-                            <div class="file-pane glass">
-                                <div class="pane-header">FILES</div>
-                                <ul class="file-tree">
-                                    <li class="active"><i data-lucide="file-text"></i> index.html</li>
-                                    <li><i data-lucide="clapperboard"></i> styles.css</li>
-                                    <li><i data-lucide="scroll"></i> script.js</li>
-                                </ul>
-                            </div>
-                            <div class="code-pane glass">
-                                <div class="editor-tabs">
-                                    <span class="e-tab active">index.html <i data-lucide="x"></i></span>
-                                </div>
-                                <div class="code-content">
-                                    <pre><code>// Neural Code Editor Active...
-// Initializing logic...</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                    </main>
                 </div>
-            </main>
+
+                <div class="bezel-bottom">
+                    <div class="bolt"></div>
+                    <div class="status-indicator">SYSTEM_ONLINE_STABLE</div>
+                    <div class="bolt"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="script.js"></script>
-    <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 
 </html>
