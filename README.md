@@ -26,3 +26,15 @@ Bu proje, Nexus AI'nın görsel estetiğini internet araştırma yetenekleri ve 
 - `index.html`: Ana neural arayüz ve çoklu sekme yapısı.
 - `styles.css`: Siberpunk & Industrial tasarım sistemi ve animasyonlar.
 - `script.js`: Dinamik mantık, AI araştırma protokolü ve proje dağıtımı.
+
+## 🐍 Python Research Tools
+This repository also includes Python scripts for advanced research and data fetching.
+
+### Requirements
+- Python 3.9+
+- `pip install -r requirements.txt`
+- `GEMINI_API_KEY` environment variable
+
+### Usage
+1. **AI Research**: `python nexus_research.py "your query here"`
+2. **Sheets Data**: `python sheets_fetcher.py`
