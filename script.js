@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function addMessage(text, sender) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `msg ${sender}`;
-        msgDiv.innerText = text;
+        msgDiv.innerHTML = text; // HTML desteği eklendi
         chatBox.appendChild(msgDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -80,33 +80,42 @@ document.addEventListener('DOMContentLoaded', () => {
             const steps = [
                 "Anlaşıldı. Sinirsel ağlar üzerinden sorgulama yapılıyor...",
                 "Küresel veri merkezleri üzerinden internet araştırması başlatıldı...",
-                "Hava durumu verileri ve trendleri analiz ediliyor... (Source: MSN Weather)",
                 "İstek mimarisi analiz ediliyor... (Parsing context)",
-                "Gerekli kod blokları oluşturuluyor... (Synthesizing code)",
-                "Tasarım katmanları entegre ediliyor... (Applying styles)",
+                "Gerekli veri blokları oluşturuluyor... (Synthesizing data)",
                 "Son kontroller yapılıyor... (Final validation)"
             ];
 
+            // AI isteğini paralel başlat
+            const aiPromise = fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            }).then(res => res.json());
+
             for (let i = 0; i < steps.length; i++) {
-                await new Promise(r => setTimeout(r, 800 + Math.random() * 400));
+                await new Promise(r => setTimeout(r, 600 + Math.random() * 300));
                 thinkingMsg.querySelector('.step').innerText = steps[i];
                 thinkingMsg.querySelector('.step-progress').style.width = ((i + 1) / steps.length * 100) + '%';
             }
 
-            // Final Cevap Mantığı
-            setTimeout(() => {
+            try {
+                const data = await aiPromise;
                 thinkingMsg.remove();
-                let responseText = "";
 
-                if (text.toLowerCase().includes("hava durumu") || text.toLowerCase().includes("site kur")) {
-                    responseText = `Hava durumu sitesi protokolü başarıyla tamamlandı. Mimari yapı 'Projeler' sekmesine 'WeatherInterface v1.0' adıyla yüklendi. <br><br>Kaynaklar:<br> 🔗 <a href="https://openweathermap.org" target="_blank" class="source-link">OpenWeatherMap API</a><br> 🔗 <a href="https://weather.com" target="_blank" class="source-link">Weather.com Analizi</a>`;
-                    deployWeatherProject();
-                } else {
-                    responseText = `İnternet araştırması tamamlandı. İstediğiniz konuyla ilgili veriler doğrulandı. <br><br>Referanslar:<br> 🔗 <a href="https://google.com/search?q=${encodeURIComponent(text)}" target="_blank" class="source-link">Global Search Result</a><br> 🔗 <a href="https://wikipedia.org" target="_blank" class="source-link">Wiki Neural Verification</a>`;
-                }
+                let responseText = data.response || "Üzgünüm, şu an yanıt oluşturamıyorum.";
+
+                // Kaynak linki simülasyonu (AI yanıtına ek olarak)
+                responseText += `<br><br>Referanslar:<br> 🔗 <a href="https://google.com/search?q=${encodeURIComponent(text)}" target="_blank" class="source-link">Global Search Result</a>`;
 
                 addMessage(responseText, 'ai');
-            }, 500);
+
+                if (text.toLowerCase().includes("hava durumu") || text.toLowerCase().includes("site kur")) {
+                    deployWeatherProject();
+                }
+            } catch (error) {
+                thinkingMsg.remove();
+                addMessage("Sistem hatası: Sinirsel bağlantı kesildi.", "ai");
+            }
         }
     }
 
@@ -138,26 +147,28 @@ document.addEventListener('DOMContentLoaded', () => {
     function addMiniMessage(text, sender) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `msg ${sender}`;
-        msgDiv.innerText = text;
+        msgDiv.innerHTML = text; // HTML desteği eklendi
         miniChatBox.appendChild(msgDiv);
         miniChatBox.scrollTop = miniChatBox.scrollHeight;
     }
 
-    function handleMiniChat() {
+    async function handleMiniChat() {
         const text = miniChatInput.value.trim();
         if (text) {
             addMiniMessage(text, 'user');
             miniChatInput.value = '';
 
-            setTimeout(() => {
-                let resp = "";
-                if (text.toLowerCase().includes("site")) {
-                    resp = "Anlaşıldı. Proje başlatma yetkim var, ancak tam teşekküllü bir kurulum için ana Nexus AI panelini kullanmanı öneririm. Yine de sorguluyorum...";
-                } else {
-                    resp = "İnternet üzerinden araştırıldı: İstediğiniz veri kümesi %98 güvenle doğrulandı. Kaynak: [Neural_Link_Global]";
-                }
-                addMiniMessage(resp, 'ai');
-            }, 600);
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+                const data = await res.json();
+                addMiniMessage(data.response || "Bağlantı hatası.", 'ai');
+            } catch (e) {
+                addMiniMessage("Nexus bağlantısı başarısız.", 'ai');
+            }
         }
     }
 
