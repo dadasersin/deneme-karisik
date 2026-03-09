@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function addMessage(text, sender) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `msg ${sender}`;
-        msgDiv.innerHTML = text; // HTML desteği eklendi
+        msgDiv.innerHTML = text;
         chatBox.appendChild(msgDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -67,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
             addMessage(text, 'user');
             chatInput.value = '';
 
-            // İşlem aşamaları simülasyonu
             const thinkingMsg = document.createElement('div');
             thinkingMsg.className = 'msg ai thinking';
             thinkingMsg.innerHTML = `<div class="status-steps">
@@ -78,14 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
             chatBox.scrollTop = chatBox.scrollHeight;
 
             const steps = [
-                "Anlaşıldı. Sinirsel ağlar üzerinden sorgulama yapılıyor...",
-                "Küresel veri merkezleri üzerinden internet araştırması başlatıldı...",
-                "İstek mimarisi analiz ediliyor... (Parsing context)",
-                "Gerekli veri blokları oluşturuluyor... (Synthesizing data)",
-                "Son kontroller yapılıyor... (Final validation)"
+                "Küresel ağlar üzerinden araştırma yapılıyor...",
+                "Bulunan veriler analiz ediliyor...",
+                "Kod mimarisi tasarlanıyor...",
+                "Arayüz bileşenleri oluşturuluyor...",
+                "Final validasyon ve derleme tamamlanıyor..."
             ];
 
-            // AI isteğini paralel başlat
             const aiPromise = fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -102,21 +100,59 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await aiPromise;
                 thinkingMsg.remove();
 
-                let responseText = data.response || "Üzgünüm, şu an yanıt oluşturamıyorum.";
+                let resp = data.response || "Üzgünüm, şu an bağlantı kuramıyorum.";
 
-                // Kaynak linki simülasyonu (AI yanıtına ek olarak)
-                responseText += `<br><br>Referanslar:<br> 🔗 <a href="https://google.com/search?q=${encodeURIComponent(text)}" target="_blank" class="source-link">Global Search Result</a>`;
+                // Kaynak Linki Ekleme
+                resp += `<br><br>Kaynaklar:<br> 🔗 <a href="https://google.com/search?q=${encodeURIComponent(text)}" target="_blank" class="source-link">Global Intelligence Search</a>`;
 
-                addMessage(responseText, 'ai');
+                addMessage(resp, 'ai');
 
-                if (text.toLowerCase().includes("hava durumu") || text.toLowerCase().includes("site kur")) {
-                    deployWeatherProject();
+                // Proje Algılama ve Dağıtım
+                const projectCodeMatch = resp.match(/```html([\s\S]*?)```/);
+                if (projectCodeMatch) {
+                    const nameMatch = resp.match(/\[PROJECT_NAME:\s*(.*?)\]/);
+                    const descMatch = resp.match(/\[PROJECT_DESC:\s*(.*?)\]/);
+
+                    const pName = nameMatch ? nameMatch[1] : "Generated Project";
+                    const pDesc = descMatch ? descMatch[1] : "AI tarafından oluşturulan dinamik bileşen.";
+                    const pCode = projectCodeMatch[1];
+
+                    deployCustomProject(pName, pDesc, pCode);
                 }
             } catch (error) {
                 thinkingMsg.remove();
-                addMessage("Sistem hatası: Sinirsel bağlantı kesildi.", "ai");
+                addMessage("Bağlantı hatası: Neural link koptu.", "ai");
             }
         }
+    }
+
+    function deployCustomProject(name, desc, html) {
+        const display = document.getElementById('project-display');
+        const emptyState = display.querySelector('.empty-state');
+        if (emptyState) emptyState.remove();
+
+        const pId = 'proj-' + Date.now();
+        const projectHTML = `
+            <div class="deployed-project">
+                <div class="project-preview">
+                    <div class="custom-mockup" style="background: #000; overflow: auto; height: 100%; color: #fff; font-size: 10px; padding: 10px;">
+                        ${html}
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h4>${name}</h4>
+                    <p>${desc}</p>
+                    <div class="project-links">
+                        <button class="btn-mini" onclick="window.open().document.write(\`${html.replace(/'/g, "\\'")}\`)">TAM EKRAN</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        display.innerHTML += projectHTML;
+        if (window.lucide) window.lucide.createIcons();
+
+        // Bildirim
+        addMessage(`'<strong>${name}</strong>' başarıyla oluşturuldu ve Projeler sekmesine eklendi.`, 'ai');
     }
 
     sendBtn.addEventListener('click', handleChat);
@@ -144,18 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
         miniChatWindow.classList.add('hidden');
     });
 
-    function addMiniMessage(text, sender) {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `msg ${sender}`;
-        msgDiv.innerHTML = text; // HTML desteği eklendi
-        miniChatBox.appendChild(msgDiv);
-        miniChatBox.scrollTop = miniChatBox.scrollHeight;
-    }
-
     async function handleMiniChat() {
         const text = miniChatInput.value.trim();
         if (text) {
-            addMiniMessage(text, 'user');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'msg user';
+            msgDiv.innerText = text;
+            miniChatBox.appendChild(msgDiv);
             miniChatInput.value = '';
 
             try {
@@ -165,51 +196,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ message: text })
                 });
                 const data = await res.json();
-                addMiniMessage(data.response || "Bağlantı hatası.", 'ai');
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'msg ai';
+                aiDiv.innerHTML = data.response;
+                miniChatBox.appendChild(aiDiv);
             } catch (e) {
-                addMiniMessage("Nexus bağlantısı başarısız.", 'ai');
+                const errDiv = document.createElement('div');
+                errDiv.className = 'msg ai';
+                errDiv.innerText = "Bağlantı hatası.";
+                miniChatBox.appendChild(errDiv);
             }
+            miniChatBox.scrollTop = miniChatBox.scrollHeight;
         }
-    }
-
-    function deployWeatherProject() {
-        const display = document.getElementById('project-display');
-        const emptyState = display.querySelector('.empty-state');
-        if (emptyState) emptyState.remove();
-
-        const projectHTML = `
-            <div class="deployed-project">
-                <div class="project-preview">
-                    <div class="weather-mockup">
-                        <div class="mock-nav"></div>
-                        <div class="mock-hero">
-                            <div class="mock-sun"></div>
-                            <div class="mock-text">
-                                <div class="mock-line" style="width: 80%"></div>
-                                <div class="mock-line" style="width: 60%"></div>
-                                <div class="mock-line" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="mock-line" style="width: 100%; height: 2px; background: var(--accent); opacity: 0.3;"></div>
-                        <div style="display: flex; gap: 5px;">
-                            <div class="mock-line" style="width: 20%"></div>
-                            <div class="mock-line" style="width: 20%"></div>
-                            <div class="mock-line" style="width: 20%"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-info">
-                    <h4>WeatherInterface v1.0</h4>
-                    <p>Gerçek zamanlı hava durumu verilerini işleyen siberpunk temalı dashboard örneği.</p>
-                    <div class="project-links">
-                        <button class="btn-mini">ÖNİZLEMEYİ AÇ</button>
-                        <button class="btn-mini">KODU İNCELE</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        display.innerHTML += projectHTML;
-        if (window.lucide) window.lucide.createIcons();
     }
 
     miniSendBtn.addEventListener('click', handleMiniChat);
@@ -219,20 +217,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Dinamik Grafik Çekirdeği
     setInterval(() => {
-        // Beyin Kapasitesi (%82 civarı)
         const brainCircle = document.querySelector('.brain-cap .circle-fill');
         if (brainCircle) {
-            const drift = Math.floor(Math.random() * 4) - 2;
-            const current = 82 + drift;
+            const current = 80 + Math.floor(Math.random() * 5);
             brainCircle.style.strokeDasharray = `${current}, 100`;
             document.querySelector('.brain-cap .percent').innerText = `${current}%`;
         }
 
-        // Sinir Sistemi (%24 civarı)
         const neuralCircle = document.querySelector('.neural-sys .circle-fill');
         if (neuralCircle) {
-            const drift = Math.floor(Math.random() * 6) - 3;
-            const current = 24 + drift;
+            const current = 20 + Math.floor(Math.random() * 10);
             neuralCircle.style.strokeDasharray = `${current}, 100`;
             document.querySelector('.neural-sys .percent').innerText = `${current}%`;
         }

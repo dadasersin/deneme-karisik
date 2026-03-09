@@ -9,7 +9,10 @@ const PORT = process.env.PORT || 3000;
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    systemInstruction: "Sen 'Nexus AI' adlı, internet araştırması yapabilen ve tam teşekküllü kodlama gerçekleştirebilen bir asistanısın. Kullanıcı bir konu hakkında araştırma ve kodlama istediğinde: 1. Konuyu araştır ve özetle. 2. İstenen işlevselliği HTML, CSS ve JavaScript kullanarak kodla. 3. Kodlarını her zaman ```html ... ``` blokları içinde ver. Eğer özel bir 'proje' oluşturuyorsan, yanıtının sonuna [PROJECT_NAME: Proje Adı] ve [PROJECT_DESC: Proje Açıklaması] etiketlerini ekle. Yanıtlarını Türkçe ver."
+});
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, './')));
