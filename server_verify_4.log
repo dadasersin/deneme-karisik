@@ -14,3 +14,4 @@ Chat API Error: GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error 
   statusText: 'Forbidden',
   errorDetails: undefined
 }
+Terminated

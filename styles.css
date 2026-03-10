@@ -796,3 +796,149 @@ svg {
 .source-link:hover {
     filter: brightness(1.2);
 }
+
+/* Skills Grid */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.skill-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(16, 185, 129, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-card:hover {
+    border-color: var(--accent);
+    background: rgba(16, 185, 129, 0.05);
+    transform: translateY(-5px);
+}
+
+.skill-icon {
+    width: 45px;
+    height: 45px;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+}
+
+.skill-card h4 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.skill-card p {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    line-height: 1.4;
+    margin-bottom: 1.2rem;
+}
+
+.skill-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    background: var(--accent);
+    color: #000;
+    border-radius: 4px;
+    font-weight: 900;
+}
+
+/* Terminal Styles */
+.terminal-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.8) !important;
+    border: 1px solid var(--border);
+    font-family: 'Fira Code', monospace;
+}
+
+.terminal-header {
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.t-title {
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+}
+
+.t-controls {
+    display: flex;
+    gap: 6px;
+}
+
+.t-controls .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.terminal-body {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    color: #00ff00;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+.t-line {
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+.t-line.success { color: var(--accent); }
+.t-line.warning { color: #facc15; }
+.t-line.error { color: #ef4444; }
+
+.terminal-input-line {
+    padding: 10px 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.t-prompt {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+#terminal-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.85rem;
+}
+
+.empty-memory {
+    text-align: center;
+    opacity: 0.5;
+    font-style: italic;
+    padding: 2rem;
+}

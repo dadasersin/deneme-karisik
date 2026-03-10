@@ -9,11 +9,43 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HISTORY_FILE = path.join(__dirname, 'chat_history.json');
 
+// Mock Skills Data (Adapted from OpenClaw concept)
+const skills = [
+    {
+        id: 'coding-assistant',
+        name: 'Coding Assistant',
+        description: 'Yüksek kaliteli kod üretimi ve hata ayıklama uzmanı.',
+        icon: 'code',
+        badge: 'ACTIVE'
+    },
+    {
+        id: 'research-pro',
+        name: 'Research Pro',
+        description: 'Derinlemesine internet araştırması ve veri sentezi.',
+        icon: 'search',
+        badge: 'ACTIVE'
+    },
+    {
+        id: 'system-architect',
+        name: 'System Architect',
+        description: 'Karmaşık sistem mimarileri ve optimizasyon.',
+        icon: 'layers',
+        badge: 'ACTIVE'
+    },
+    {
+        id: 'security-guard',
+        name: 'Security Guard',
+        description: 'Güvenlik analizi ve açık tarama protokolleri.',
+        icon: 'shield',
+        badge: 'STANDBY'
+    }
+];
+
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
-    systemInstruction: "Sen Nexus AI, profesyonel bir araştırmacı ve geliştiricisin. Kullanıcı ne sorarsa sorsun (örneğin 'sakarya nerede' gibi coğrafi sorular), internet üzerinde derinlemesine araştırma yaparak en doğru ve güncel bilgileri bulmalı ve yanıtlamalısın. Yanıtların her zaman doğru, detaylı ve güvenilir kaynaklara dayalı olmalıdır. Yanıtlarında mutlaka ilgili kaynak linklerini (referansları) paylaşmalısın. Eğer kullanıcı senden bir web sitesi veya uygulama ('site kur', 'proje yap' vb.) hazırlamanı isterse, hazırladığın HTML, CSS ve JavaScript kodlarını mutlaka [PROJECT_DATA]...[/PROJECT_DATA] etiketleri içerisine yerleştirerek gönder.",
+    systemInstruction: "Sen Nexus AI, profesyonel bir araştırmacı ve geliştiricisin. Sana entegre edilmiş 'Coding Assistant', 'Research Pro' ve 'System Architect' gibi becerilere (skills) sahipsin. Kullanıcı ne sorarsa sorsun, bu becerilerini kullanarak internet üzerinde derinlemesine araştırma yapmalı ve en doğru yanıtı vermelisin. Yanıtlarında mutlaka ilgili kaynak linklerini paylaşmalısın. Eğer bir web sitesi veya uygulama hazırlaman istenirse, HTML/CSS/JS kodlarını [PROJECT_DATA]...[/PROJECT_DATA] etiketleri içerisine yerleştir.",
     tools: [
         {
             googleSearchRetrieval: {},
@@ -29,7 +61,6 @@ app.post('/api/chat', async (req, res) => {
     const { message } = req.body;
     if (!message) return res.status(400).json({ error: 'Message is required' });
 
-    // Save user message immediately
     saveToHistory({ role: 'user', content: message, timestamp: new Date() });
 
     try {
@@ -37,14 +68,17 @@ app.post('/api/chat', async (req, res) => {
         const response = await result.response;
         const text = response.text();
 
-        // Save AI response
         saveToHistory({ role: 'ai', content: text, timestamp: new Date() });
-
         res.json({ response: text });
     } catch (error) {
         console.error('Chat API Error:', error);
         res.status(500).json({ error: 'Failed to generate response', details: error.message });
     }
+});
+
+// Skills Endpoint
+app.get('/api/skills', (req, res) => {
+    res.json(skills);
 });
 
 // History Endpoint
@@ -89,7 +123,6 @@ app.get('/export', async (req, res) => {
     }
 });
 
-// Catch-all to serve index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });

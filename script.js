@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chat-input');
     const chatBox = document.getElementById('chat-box');
     const sendBtn = document.getElementById('send-btn');
-    const historyList = document.querySelector('.memory-section .item-list');
+    const memoryList = document.getElementById('memory-list');
+    const skillsDisplay = document.getElementById('skills-display');
+    const terminalOutput = document.getElementById('terminal-output');
+    const terminalInput = document.getElementById('terminal-input');
 
     const ACCESS_KEY = '0000';
 
@@ -19,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 loginOverlay.classList.add('hidden');
                 appContainer.classList.remove('hidden');
-                loadHistory(); // Login sonrası geçmişi yükle
+                initApp();
             }, 500);
         } else {
             accessKeyInput.style.borderColor = '#ef4444';
@@ -34,6 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
     accessKeyInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleLogin();
     });
+
+    function initApp() {
+        loadHistory();
+        loadSkills();
+        initTerminal();
+        if (window.lucide) window.lucide.createIcons();
+    }
 
     // Sekme Yönetimi
     navItems.forEach(item => {
@@ -50,8 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            if (targetTab === 'nexus') {
-                chatBox.scrollTop = chatBox.scrollHeight;
+            if (targetTab === 'terminal') {
+                terminalInput.focus();
             }
 
             if (window.lucide) window.lucide.createIcons();
@@ -63,29 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const msgDiv = document.createElement('div');
         msgDiv.className = `msg ${sender}`;
 
-        // Markdown benzeri linkleri HTML'e çevir
         let formattedText = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" class="source-link">$1</a>');
-        // URL'leri otomatik linkle
         formattedText = formattedText.replace(/(?<!href=")(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" class="source-link">$1</a>');
 
         msgDiv.innerHTML = formattedText;
         container.appendChild(msgDiv);
         container.scrollTop = container.scrollHeight;
-    }
-
-    function processAIResponse(responseText, isMini = false) {
-        const container = isMini ? miniChatBox : chatBox;
-
-        // Project Data parsing
-        const projectMatch = responseText.match(/\[PROJECT_DATA\]([\s\S]*?)\[\/PROJECT_DATA\]/);
-        if (projectMatch) {
-            const projectCode = projectMatch[1];
-            responseText = responseText.replace(/\[PROJECT_DATA\][\s\S]*?\[\/PROJECT_DATA\]/, '<div class="deployment-notice"><i data-lucide="package-check"></i> <span>Sistem: Proje başarıyla oluşturuldu ve Projeler sekmesine eklendi.</span></div>');
-            deployProject(projectCode);
-        }
-
-        addMessage(responseText, 'ai', container);
-        loadHistory(); // Yanıt sonrası listeyi güncelle
     }
 
     async function handleChat() {
@@ -94,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
             addMessage(text, 'user');
             chatInput.value = '';
 
-            // İşlem aşamaları simülasyonu
             const thinkingMsg = document.createElement('div');
             thinkingMsg.className = 'msg ai thinking';
             thinkingMsg.innerHTML = `<div class="status-steps">
@@ -106,13 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const steps = [
                 "Anlaşıldı. Sinirsel ağlar üzerinden sorgulama yapılıyor...",
-                "Küresel veri merkezleri üzerinden internet araştırması başlatıldı...",
-                "İstek mimarisi analiz ediliyor... (Parsing context)",
+                "Beceriler (Skills) katmanı analiz ediliyor...",
+                "Küresel veri merkezleri üzerinden araştırma başlatıldı...",
                 "Gerekli veri blokları oluşturuluyor... (Synthesizing data)",
                 "Son kontroller yapılıyor... (Final validation)"
             ];
 
-            // AI isteğini paralel başlat
             const aiPromise = fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -123,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 await new Promise(r => setTimeout(r, 600 + Math.random() * 300));
                 thinkingMsg.querySelector('.step').innerText = steps[i];
                 thinkingMsg.querySelector('.step-progress').style.width = ((i + 1) / steps.length * 100) + '%';
+                addTerminalLine(`[SYSTEM] Step ${i+1}: ${steps[i]}`, 'success');
             }
 
             try {
@@ -132,8 +124,22 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 thinkingMsg.remove();
                 addMessage("Sistem hatası: Sinirsel bağlantı kesildi.", "ai");
+                addTerminalLine(`[ERROR] AI connection failed: ${error.message}`, 'error');
             }
         }
+    }
+
+    function processAIResponse(responseText) {
+        const projectMatch = responseText.match(/\[PROJECT_DATA\]([\s\S]*?)\[\/PROJECT_DATA\]/);
+        if (projectMatch) {
+            const projectCode = projectMatch[1];
+            responseText = responseText.replace(/\[PROJECT_DATA\][\s\S]*?\[\/PROJECT_DATA\]/, '<div class="deployment-notice"><i data-lucide="package-check"></i> <span>Sistem: Proje başarıyla oluşturuldu ve Projeler sekmesine eklendi.</span></div>');
+            deployProject(projectCode);
+            addTerminalLine("[SYSTEM] Project data detected and deployed to 'Projects' tab.", 'success');
+        }
+
+        addMessage(responseText, 'ai');
+        loadHistory();
     }
 
     async function loadHistory() {
@@ -141,18 +147,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/api/history');
             const history = await res.json();
 
-            if (historyList) {
-                historyList.innerHTML = '';
-                // Sadece kullanıcı mesajlarını 'hafıza' olarak göster (son 5)
+            if (memoryList) {
+                memoryList.innerHTML = '';
                 const recentUserMsgs = history.filter(h => h.role === 'user').slice(-5).reverse();
 
-                recentUserMsgs.forEach(msg => {
-                    const item = document.createElement('div');
-                    item.className = 'item';
-                    item.innerHTML = `<i data-lucide="message-circle"></i> ${msg.content.substring(0, 20)}... <i data-lucide="chevron-right"></i>`;
-                    historyList.appendChild(item);
-                });
-
+                if (recentUserMsgs.length === 0) {
+                    memoryList.innerHTML = '<div class="empty-memory">Veri bekleniyor...</div>';
+                } else {
+                    recentUserMsgs.forEach(msg => {
+                        const item = document.createElement('div');
+                        item.className = 'item';
+                        item.innerHTML = `<i data-lucide="message-circle"></i> ${msg.content.substring(0, 30)}${msg.content.length > 30 ? '...' : ''} <i data-lucide="chevron-right"></i>`;
+                        memoryList.appendChild(item);
+                    });
+                }
                 if (window.lucide) window.lucide.createIcons();
             }
         } catch (e) {
@@ -160,48 +168,74 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    sendBtn.addEventListener('click', handleChat);
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleChat();
-    });
+    async function loadSkills() {
+        try {
+            const res = await fetch('/api/skills');
+            const skills = await res.json();
 
-    // Yüzen Bot (Nexus Mini) Mantığı
-    const floatingTrigger = document.getElementById('floating-bot-trigger');
-    const miniChatWindow = document.getElementById('mini-chat-window');
-    const closeMiniChat = document.getElementById('close-mini-chat');
-    const miniChatInput = document.getElementById('mini-chat-input');
-    const miniSendBtn = document.getElementById('mini-send-btn');
-    const miniChatBox = document.getElementById('mini-chat-box');
-
-    floatingTrigger.addEventListener('click', () => {
-        miniChatWindow.classList.toggle('hidden');
-        if (!miniChatWindow.classList.contains('hidden')) {
-            miniChatInput.focus();
-        }
-        if (window.lucide) window.lucide.createIcons();
-    });
-
-    closeMiniChat.addEventListener('click', () => {
-        miniChatWindow.classList.add('hidden');
-    });
-
-    async function handleMiniChat() {
-        const text = miniChatInput.value.trim();
-        if (text) {
-            addMessage(text, 'user', miniChatBox);
-            miniChatInput.value = '';
-
-            try {
-                const res = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text })
+            if (skillsDisplay) {
+                skillsDisplay.innerHTML = '';
+                skills.forEach(skill => {
+                    const card = document.createElement('div');
+                    card.className = 'skill-card';
+                    card.innerHTML = `
+                        <div class="skill-badge">${skill.badge}</div>
+                        <div class="skill-icon"><i data-lucide="${skill.icon}"></i></div>
+                        <h4>${skill.name}</h4>
+                        <p>${skill.description}</p>
+                        <button class="btn-mini">KONFIGÜRE ET</button>
+                    `;
+                    skillsDisplay.appendChild(card);
                 });
-                const data = await res.json();
-                processAIResponse(data.response || "Bağlantı hatası.", true);
-            } catch (e) {
-                addMessage("Nexus bağlantısı başarısız.", 'ai', miniChatBox);
+                if (window.lucide) window.lucide.createIcons();
             }
+        } catch (e) {
+            console.error("Skills load error", e);
+        }
+    }
+
+    // Terminal Mantığı
+    function initTerminal() {
+        addTerminalLine("[INFO] Neural Terminal v2.0 initialized.");
+        addTerminalLine(`[INFO] Current user: YÖNETİCİ @ ${new Date().toLocaleTimeString()}`);
+
+        terminalInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = terminalInput.value.trim();
+                if (cmd) {
+                    addTerminalLine(`nexus@system:~$ ${cmd}`);
+                    processCommand(cmd);
+                    terminalInput.value = '';
+                }
+            }
+        });
+    }
+
+    function addTerminalLine(text, type = '') {
+        const line = document.createElement('div');
+        line.className = `t-line ${type}`;
+        line.innerText = text;
+        terminalOutput.appendChild(line);
+        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    function processCommand(cmd) {
+        const c = cmd.toLowerCase();
+        if (c === 'clear') {
+            terminalOutput.innerHTML = '';
+        } else if (c === 'status') {
+            addTerminalLine("SYSTEM STATUS: ONLINE_STABLE", 'success');
+            addTerminalLine("CPU LOAD: 12%", 'success');
+            addTerminalLine("NEURAL LINK: 1.2 GBPS", 'success');
+        } else if (c === 'help') {
+            addTerminalLine("Available commands: clear, status, help, skills, reload");
+        } else if (c === 'skills') {
+            addTerminalLine("Listing active skills...");
+            addTerminalLine("- Coding Assistant (Active)");
+            addTerminalLine("- Research Pro (Active)");
+            addTerminalLine("- System Architect (Active)");
+        } else {
+            addTerminalLine(`[ERROR] Command not found: ${cmd}`, 'error');
         }
     }
 
@@ -253,27 +287,62 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.lucide) window.lucide.createIcons();
     }
 
+    sendBtn.addEventListener('click', handleChat);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleChat();
+    });
+
+    // Mini Chat
+    const floatingTrigger = document.getElementById('floating-bot-trigger');
+    const miniChatWindow = document.getElementById('mini-chat-window');
+    const closeMiniChat = document.getElementById('close-mini-chat');
+    const miniChatInput = document.getElementById('mini-chat-input');
+    const miniSendBtn = document.getElementById('mini-send-btn');
+    const miniChatBox = document.getElementById('mini-chat-box');
+
+    floatingTrigger.addEventListener('click', () => {
+        miniChatWindow.classList.toggle('hidden');
+        if (!miniChatWindow.classList.contains('hidden')) miniChatInput.focus();
+        if (window.lucide) window.lucide.createIcons();
+    });
+
+    closeMiniChat.addEventListener('click', () => miniChatWindow.classList.add('hidden'));
+
+    async function handleMiniChat() {
+        const text = miniChatInput.value.trim();
+        if (text) {
+            addMessage(text, 'user', miniChatBox);
+            miniChatInput.value = '';
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+                const data = await res.json();
+                addMessage(data.response || "Bağlantı hatası.", 'ai', miniChatBox);
+            } catch (e) {
+                addMessage("Nexus bağlantısı başarısız.", 'ai', miniChatBox);
+            }
+        }
+    }
+
     miniSendBtn.addEventListener('click', handleMiniChat);
     miniChatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleMiniChat();
     });
 
-    // Dinamik Grafik Çekirdeği
+    // Graphs
     setInterval(() => {
-        // Beyin Kapasitesi (%82 civarı)
         const brainCircle = document.querySelector('.brain-cap .circle-fill');
         if (brainCircle) {
-            const drift = Math.floor(Math.random() * 4) - 2;
-            const current = 82 + drift;
+            const current = 82 + (Math.floor(Math.random() * 4) - 2);
             brainCircle.style.strokeDasharray = `${current}, 100`;
             document.querySelector('.brain-cap .percent').innerText = `${current}%`;
         }
-
-        // Sinir Sistemi (%24 civarı)
         const neuralCircle = document.querySelector('.neural-sys .circle-fill');
         if (neuralCircle) {
-            const drift = Math.floor(Math.random() * 6) - 3;
-            const current = 24 + drift;
+            const current = 24 + (Math.floor(Math.random() * 6) - 3);
             neuralCircle.style.strokeDasharray = `${current}, 100`;
             document.querySelector('.neural-sys .percent').innerText = `${current}%`;
         }
