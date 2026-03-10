@@ -9,6 +9,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HISTORY_FILE = path.join(__dirname, 'chat_history.json');
 
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+if (!GEMINI_API_KEY) {
+    console.warn("⚠️ [WARNING] GEMINI_API_KEY is missing! AI features will not work until this is set in environment variables.");
+}
+
 // Mock Skills Data (Adapted from OpenClaw concept)
 const skills = [
     {
@@ -42,16 +48,19 @@ const skills = [
 ];
 
 // Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
-    systemInstruction: "Sen Nexus AI, profesyonel bir araştırmacı ve geliştiricisin. Sana entegre edilmiş 'Coding Assistant', 'Research Pro' ve 'System Architect' gibi becerilere (skills) sahipsin. Kullanıcı ne sorarsa sorsun, bu becerilerini kullanarak internet üzerinde derinlemesine araştırma yapmalı ve en doğru yanıtı vermelisin. Yanıtlarında mutlaka ilgili kaynak linklerini paylaşmalısın. Eğer bir web sitesi veya uygulama hazırlaman istenirse, HTML/CSS/JS kodlarını [PROJECT_DATA]...[/PROJECT_DATA] etiketleri içerisine yerleştir.",
-    tools: [
-        {
-            googleSearchRetrieval: {},
-        },
-    ],
-});
+let model;
+if (GEMINI_API_KEY) {
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+    model = genAI.getGenerativeModel({
+        model: "gemini-1.5-flash",
+        systemInstruction: "Sen Nexus AI, profesyonel bir araştırmacı ve geliştiricisin. Sana entegre edilmiş 'Coding Assistant', 'Research Pro' ve 'System Architect' gibi becerilere (skills) sahipsin. Kullanıcı ne sorarsa sorsun, bu becerilerini kullanarak internet üzerinde derinlemesine araştırma yapmalı ve en doğru yanıtı vermelisin. Yanıtlarında mutlaka ilgili kaynak linklerini paylaşmalısın. Eğer bir web sitesi veya uygulama hazırlaman istenirse, HTML/CSS/JS kodlarını [PROJECT_DATA]...[/PROJECT_DATA] etiketleri içerisine yerleştir.",
+        tools: [
+            {
+                googleSearchRetrieval: {},
+            },
+        ],
+    });
+}
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, './')));
@@ -60,6 +69,13 @@ app.use(express.static(path.join(__dirname, './')));
 app.post('/api/chat', async (req, res) => {
     const { message } = req.body;
     if (!message) return res.status(400).json({ error: 'Message is required' });
+
+    if (!model) {
+        return res.status(503).json({
+            error: 'AI Hizmeti Hazır Değil',
+            details: 'GEMINI_API_KEY eksik veya geçersiz. Lütfen Render dashboard üzerinden API anahtarınızı ekleyin.'
+        });
+    }
 
     saveToHistory({ role: 'user', content: message, timestamp: new Date() });
 
