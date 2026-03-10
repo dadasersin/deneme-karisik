@@ -1,0 +1,16 @@
+
+> nexus-ai-dashboard@1.0.0 start
+> node server.js
+
+[dotenv@17.3.1] injecting env (0) from .env -- tip: ⚡️ secrets for agents: https://dotenvx.com/as2
+Server is running on port 3000
+Chat API Error: GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [403 Forbidden] Method doesn't allow unregistered callers (callers without established identity). Please use API Key or other form of API consumer identity to call this API.
+    at handleResponseNotOk (/app/node_modules/@google/generative-ai/dist/index.js:434:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async makeRequest (/app/node_modules/@google/generative-ai/dist/index.js:403:9)
+    at async generateContent (/app/node_modules/@google/generative-ai/dist/index.js:867:22)
+    at async /app/server.js:31:24 {
+  status: 403,
+  statusText: 'Forbidden',
+  errorDetails: undefined
+}

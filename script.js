@@ -53,12 +53,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // AI Sohbet
-    function addMessage(text, sender) {
+    function addMessage(text, sender, container = chatBox) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `msg ${sender}`;
-        msgDiv.innerHTML = text; // HTML desteği eklendi
-        chatBox.appendChild(msgDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // Markdown benzeri linkleri HTML'e çevir
+        let formattedText = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" class="source-link">$1</a>');
+        // URL'leri otomatik linkle
+        formattedText = formattedText.replace(/(?<!href=")(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" class="source-link">$1</a>');
+
+        msgDiv.innerHTML = formattedText;
+        container.appendChild(msgDiv);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function processAIResponse(responseText, isMini = false) {
+        const container = isMini ? miniChatBox : chatBox;
+
+        // Project Data parsing
+        const projectMatch = responseText.match(/\[PROJECT_DATA\]([\s\S]*?)\[\/PROJECT_DATA\]/);
+        if (projectMatch) {
+            const projectCode = projectMatch[1];
+            responseText = responseText.replace(/\[PROJECT_DATA\][\s\S]*?\[\/PROJECT_DATA\]/, '<div class="deployment-notice"><i data-lucide="package-check"></i> <span>Sistem: Proje başarıyla oluşturuldu ve Projeler sekmesine eklendi.</span></div>');
+            deployProject(projectCode);
+        }
+
+        addMessage(responseText, 'ai', container);
     }
 
     async function handleChat() {
@@ -101,17 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const data = await aiPromise;
                 thinkingMsg.remove();
-
-                let responseText = data.response || "Üzgünüm, şu an yanıt oluşturamıyorum.";
-
-                // Kaynak linki simülasyonu (AI yanıtına ek olarak)
-                responseText += `<br><br>Referanslar:<br> 🔗 <a href="https://google.com/search?q=${encodeURIComponent(text)}" target="_blank" class="source-link">Global Search Result</a>`;
-
-                addMessage(responseText, 'ai');
-
-                if (text.toLowerCase().includes("hava durumu") || text.toLowerCase().includes("site kur")) {
-                    deployWeatherProject();
-                }
+                processAIResponse(data.response || "Üzgünüm, şu an yanıt oluşturamıyorum.");
             } catch (error) {
                 thinkingMsg.remove();
                 addMessage("Sistem hatası: Sinirsel bağlantı kesildi.", "ai");
@@ -144,18 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
         miniChatWindow.classList.add('hidden');
     });
 
-    function addMiniMessage(text, sender) {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `msg ${sender}`;
-        msgDiv.innerHTML = text; // HTML desteği eklendi
-        miniChatBox.appendChild(msgDiv);
-        miniChatBox.scrollTop = miniChatBox.scrollHeight;
-    }
-
     async function handleMiniChat() {
         const text = miniChatInput.value.trim();
         if (text) {
-            addMiniMessage(text, 'user');
+            addMessage(text, 'user', miniChatBox);
             miniChatInput.value = '';
 
             try {
@@ -165,50 +167,58 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ message: text })
                 });
                 const data = await res.json();
-                addMiniMessage(data.response || "Bağlantı hatası.", 'ai');
+                processAIResponse(data.response || "Bağlantı hatası.", true);
             } catch (e) {
-                addMiniMessage("Nexus bağlantısı başarısız.", 'ai');
+                addMessage("Nexus bağlantısı başarısız.", 'ai', miniChatBox);
             }
         }
     }
 
-    function deployWeatherProject() {
+    function deployProject(code) {
         const display = document.getElementById('project-display');
         const emptyState = display.querySelector('.empty-state');
         if (emptyState) emptyState.remove();
 
+        const projectId = 'project-' + Date.now();
         const projectHTML = `
             <div class="deployed-project">
                 <div class="project-preview">
-                    <div class="weather-mockup">
-                        <div class="mock-nav"></div>
-                        <div class="mock-hero">
-                            <div class="mock-sun"></div>
-                            <div class="mock-text">
-                                <div class="mock-line" style="width: 80%"></div>
-                                <div class="mock-line" style="width: 60%"></div>
-                                <div class="mock-line" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="mock-line" style="width: 100%; height: 2px; background: var(--accent); opacity: 0.3;"></div>
-                        <div style="display: flex; gap: 5px;">
-                            <div class="mock-line" style="width: 20%"></div>
-                            <div class="mock-line" style="width: 20%"></div>
-                            <div class="mock-line" style="width: 20%"></div>
-                        </div>
+                    <div class="code-preview-box">
+                        <i data-lucide="code"></i>
+                        <span>AI Tarafından Oluşturulan Modül</span>
                     </div>
                 </div>
                 <div class="project-info">
-                    <h4>WeatherInterface v1.0</h4>
-                    <p>Gerçek zamanlı hava durumu verilerini işleyen siberpunk temalı dashboard örneği.</p>
+                    <h4>Proje ${projectId}</h4>
+                    <p>Dinamik olarak sentezlenen ve yayına hazırlanan bileşen.</p>
                     <div class="project-links">
-                        <button class="btn-mini">ÖNİZLEMEYİ AÇ</button>
-                        <button class="btn-mini">KODU İNCELE</button>
+                        <button class="btn-mini preview-btn" data-id="${projectId}">ÖNİZLEME</button>
+                        <button class="btn-mini code-btn" data-id="${projectId}">KODU AL</button>
                     </div>
                 </div>
             </div>
         `;
-        display.innerHTML += projectHTML;
+
+        const projectElement = document.createElement('div');
+        projectElement.innerHTML = projectHTML;
+        const actualElement = projectElement.firstElementChild;
+        display.appendChild(actualElement);
+
+        actualElement.querySelector('.preview-btn').onclick = () => {
+            const win = window.open("", "_blank");
+            win.document.write(code);
+            win.document.close();
+        };
+
+        actualElement.querySelector('.code-btn').onclick = () => {
+            const blob = new Blob([code], {type: 'text/html'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nexus-${projectId}.html`;
+            a.click();
+        };
+
         if (window.lucide) window.lucide.createIcons();
     }
 
