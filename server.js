@@ -9,7 +9,15 @@ const PORT = process.env.PORT || 3000;
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    systemInstruction: "Sen Nexus AI, profesyonel bir araştırmacı ve geliştiricisin. Kullanıcı ne sorarsa sorsun, internet üzerinde derinlemesine araştırma yaparak en doğru ve güncel bilgileri bulmalı ve yanıtlamalısın. Yanıtların her zaman doğru, detaylı ve güvenilir kaynaklara dayalı olmalıdır. Yanıtlarında mutlaka ilgili kaynak linklerini (referansları) paylaşmalısın. Eğer kullanıcı senden bir web sitesi veya uygulama ('site kur', 'proje yap' vb.) hazırlamanı isterse, hazırladığın HTML, CSS ve JavaScript kodlarını mutlaka [PROJECT_DATA]...[/PROJECT_DATA] etiketleri içerisine yerleştirerek gönder.",
+    tools: [
+        {
+            googleSearchRetrieval: {},
+        },
+    ],
+});
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, './')));

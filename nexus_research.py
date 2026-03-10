@@ -14,7 +14,13 @@ def main():
 
     # Configure Gemini
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash')
+
+    # Configure model with system instruction and tools
+    model = genai.GenerativeModel(
+        model_name='gemini-1.5-flash',
+        system_instruction="Sen Nexus AI, profesyonel bir araştırmacı ve geliştiricisin. Kullanıcı ne sorarsa sorsun, internet üzerinde derinlemesine araştırma yaparak en doğru ve güncel bilgileri bulmalı ve yanıtlamalısın. Yanıtların her zaman doğru, detaylı ve güvenilir kaynaklara dayalı olmalıdır. Yanıtlarında mutlaka ilgili kaynak linklerini (referansları) paylaşmalısın.",
+        tools=[{ "google_search_retrieval": {} }]
+    )
 
     print("--- Nexus AI Python Research Interface ---")
 
@@ -28,14 +34,19 @@ def main():
         return
 
     print(f"\nSearching for: {query}...")
-    print("Analyzing neural data...")
+    print("Analyzing neural data with Google Search grounding...")
 
     try:
         response = model.generate_content(query)
         print("\n--- Research Results ---")
         print(response.text)
-        print("\nReferences:")
-        print(f"🔗 https://google.com/search?q={query.replace(' ', '+')}")
+
+        # In Python SDK, search results are often in response.candidates[0].grounding_metadata
+        if hasattr(response, 'candidates') and len(response.candidates) > 0:
+            metadata = response.candidates[0].grounding_metadata
+            if metadata and metadata.search_entry_point:
+                print("\nSources & References:")
+                print(metadata.search_entry_point.rendered_content)
     except Exception as e:
         print(f"\nSystem Error: {str(e)}")
 
