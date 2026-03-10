@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chat-input');
     const chatBox = document.getElementById('chat-box');
     const sendBtn = document.getElementById('send-btn');
+    const historyList = document.querySelector('.memory-section .item-list');
 
     const ACCESS_KEY = '0000';
 
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 loginOverlay.classList.add('hidden');
                 appContainer.classList.remove('hidden');
+                loadHistory(); // Login sonrası geçmişi yükle
             }, 500);
         } else {
             accessKeyInput.style.borderColor = '#ef4444';
@@ -47,6 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     tab.classList.remove('hidden');
                 }
             });
+
+            if (targetTab === 'nexus') {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
 
             if (window.lucide) window.lucide.createIcons();
         });
@@ -79,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         addMessage(responseText, 'ai', container);
+        loadHistory(); // Yanıt sonrası listeyi güncelle
     }
 
     async function handleChat() {
@@ -121,11 +128,35 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const data = await aiPromise;
                 thinkingMsg.remove();
-                processAIResponse(data.response || "Üzgünüm, şu an yanıt oluşturamıyorum.");
+                processAIResponse(data.response || "Üzgünüm, şu an yanıt oluşturamıyorum. Lütfen internet bağlantınızı veya API anahtarınızı kontrol edin.");
             } catch (error) {
                 thinkingMsg.remove();
                 addMessage("Sistem hatası: Sinirsel bağlantı kesildi.", "ai");
             }
+        }
+    }
+
+    async function loadHistory() {
+        try {
+            const res = await fetch('/api/history');
+            const history = await res.json();
+
+            if (historyList) {
+                historyList.innerHTML = '';
+                // Sadece kullanıcı mesajlarını 'hafıza' olarak göster (son 5)
+                const recentUserMsgs = history.filter(h => h.role === 'user').slice(-5).reverse();
+
+                recentUserMsgs.forEach(msg => {
+                    const item = document.createElement('div');
+                    item.className = 'item';
+                    item.innerHTML = `<i data-lucide="message-circle"></i> ${msg.content.substring(0, 20)}... <i data-lucide="chevron-right"></i>`;
+                    historyList.appendChild(item);
+                });
+
+                if (window.lucide) window.lucide.createIcons();
+            }
+        } catch (e) {
+            console.error("History load error", e);
         }
     }
 
