@@ -104,24 +104,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 "Son kontroller yapılıyor... (Final validation)"
             ];
 
-            const aiPromise = fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text })
-            }).then(res => res.json());
-
-            for (let i = 0; i < steps.length; i++) {
-                await new Promise(r => setTimeout(r, 600 + Math.random() * 300));
-                thinkingMsg.querySelector('.step').innerText = steps[i];
-                thinkingMsg.querySelector('.step-progress').style.width = ((i + 1) / steps.length * 100) + '%';
-                addTerminalLine(`[SYSTEM] Step ${i+1}: ${steps[i]}`, 'success');
-            }
+            let stepIdx = 0;
+            const stepInterval = setInterval(() => {
+                if (stepIdx < steps.length) {
+                    thinkingMsg.querySelector('.step').innerText = steps[stepIdx];
+                    thinkingMsg.querySelector('.step-progress').style.width = ((stepIdx + 1) / steps.length * 100) + '%';
+                    addTerminalLine(`[SYSTEM] Step ${stepIdx+1}: ${steps[stepIdx]}`, 'success');
+                    stepIdx++;
+                } else {
+                    clearInterval(stepInterval);
+                }
+            }, 800);
 
             try {
-                const data = await aiPromise;
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+                const data = await res.json();
+                clearInterval(stepInterval);
                 thinkingMsg.remove();
-                processAIResponse(data.response || "Üzgünüm, şu an yanıt oluşturamıyorum. Lütfen internet bağlantınızı veya API anahtarınızı kontrol edin.");
+
+                if (data.error) {
+                    addMessage(`SYSTEM ERROR: ${data.error}<br><small>${data.details || 'Bilinmeyen hata.'}</small>`, "ai");
+                    addTerminalLine(`[ERROR] ${data.error}: ${data.details || ''}`, 'error');
+                } else {
+                    processAIResponse(data.response || "Yanıt alınamadı.");
+                }
             } catch (error) {
+                clearInterval(stepInterval);
                 thinkingMsg.remove();
                 addMessage("Sistem hatası: Sinirsel bağlantı kesildi.", "ai");
                 addTerminalLine(`[ERROR] AI connection failed: ${error.message}`, 'error');
@@ -175,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (skillsDisplay) {
                 skillsDisplay.innerHTML = '';
-                                skills.forEach(skill => {
+                skills.forEach(skill => {
                     const card = document.createElement('div');
                     card.className = 'skill-card';
                     const badgeClass = skill.badge === 'ACTIVE' ? '' : 'standby';
@@ -223,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         terminalOutput.scrollTop = terminalOutput.scrollHeight;
     }
 
-                function processCommand(cmd) {
+    function processCommand(cmd) {
         const c = cmd.toLowerCase();
         if (c === 'clear') {
             terminalOutput.innerHTML = '';

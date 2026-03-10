@@ -17,7 +17,7 @@ def main():
 
     # Configure model with system instruction and tools
     model = genai.GenerativeModel(
-        model_name='gemini-3-flash-preview',
+        model_name='gemini-2.0-flash-exp',
         system_instruction="Sen Nexus AI, profesyonel bir araştırmacı ve geliştiricisin. Kullanıcı ne sorarsa sorsun, internet üzerinde derinlemesine araştırma yaparak en doğru ve güncel bilgileri bulmalı ve yanıtlamalısın. Yanıtların her zaman doğru, detaylı ve güvenilir kaynaklara dayalı olmalıdır. Yanıtlarında mutlaka ilgili kaynak linklerini (referansları) paylaşmalısın.",
         tools=[{ "google_search_retrieval": {} }]
     )
