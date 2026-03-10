@@ -175,15 +175,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (skillsDisplay) {
                 skillsDisplay.innerHTML = '';
-                skills.forEach(skill => {
+                                skills.forEach(skill => {
                     const card = document.createElement('div');
                     card.className = 'skill-card';
+                    const badgeClass = skill.badge === 'ACTIVE' ? '' : 'standby';
                     card.innerHTML = `
-                        <div class="skill-badge">${skill.badge}</div>
+                        <div class="skill-badge status-chip ${badgeClass}">${skill.badge}</div>
                         <div class="skill-icon"><i data-lucide="${skill.icon}"></i></div>
-                        <h4>${skill.name}</h4>
+                        <h4>${skill.emoji} ${skill.name}</h4>
                         <p>${skill.description}</p>
-                        <button class="btn-mini">KONFIGÜRE ET</button>
+                        <div style="display:flex; justify-content: space-between; align-items: center;">
+                            <span class="status-pill">${skill.category}</span>
+                            <button class="btn-mini">YÖNET</button>
+                        </div>
                     `;
                     skillsDisplay.appendChild(card);
                 });
@@ -219,23 +223,40 @@ document.addEventListener('DOMContentLoaded', () => {
         terminalOutput.scrollTop = terminalOutput.scrollHeight;
     }
 
-    function processCommand(cmd) {
+                function processCommand(cmd) {
         const c = cmd.toLowerCase();
         if (c === 'clear') {
             terminalOutput.innerHTML = '';
         } else if (c === 'status') {
-            addTerminalLine("SYSTEM STATUS: ONLINE_STABLE", 'success');
-            addTerminalLine("CPU LOAD: 12%", 'success');
-            addTerminalLine("NEURAL LINK: 1.2 GBPS", 'success');
+            addTerminalLine('--- NEXUS SYSTEM STATUS ---', 'success');
+            addTerminalLine('CORE VERSION: 3.0.0-FLASH-PREVIEW');
+            addTerminalLine('CONNECTION: SECURE_NEURAL_LINK');
+            addTerminalLine('CPU LOAD: ' + (10 + Math.floor(Math.random() * 15)) + '%', 'success');
+            addTerminalLine('MEMORY: ' + (2.4 + Math.random()).toFixed(2) + 'GB / 16GB');
+            addTerminalLine('UPTIME: 14d 05h 22m');
+        } else if (c === 'sysinfo') {
+            addTerminalLine('OS: NexusOS v10.4.0');
+            addTerminalLine('KERNEL: xnu-10002.41.9~6');
+            addTerminalLine('HOST: NEXUS-TERMINAL-01');
+            addTerminalLine('SKILLS_ENGINE: LOADED');
         } else if (c === 'help') {
-            addTerminalLine("Available commands: clear, status, help, skills, reload");
+            addTerminalLine('Available commands:');
+            addTerminalLine('  status   - Show system health and load');
+            addTerminalLine('  sysinfo  - Display detailed system information');
+            addTerminalLine('  skills   - List all active and standby skills');
+            addTerminalLine('  clear    - Clear terminal screen');
+            addTerminalLine('  help     - Display this menu');
         } else if (c === 'skills') {
-            addTerminalLine("Listing active skills...");
-            addTerminalLine("- Coding Assistant (Active)");
-            addTerminalLine("- Research Pro (Active)");
-            addTerminalLine("- System Architect (Active)");
+            addTerminalLine('Fetching skills report...', 'warning');
+            fetch('/api/skills').then(r => r.json()).then(skills => {
+                skills.forEach(s => {
+                    const statusClass = s.badge === 'ACTIVE' ? 'success' : 'warning';
+                    addTerminalLine('[' + s.badge + '] ' + s.name + ' - ' + s.status, statusClass);
+                });
+            });
         } else {
-            addTerminalLine(`[ERROR] Command not found: ${cmd}`, 'error');
+            addTerminalLine('[ERROR] Unknown command: ' + cmd, 'error');
+            addTerminalLine("Type 'help' for available commands.");
         }
     }
 

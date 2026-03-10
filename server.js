@@ -22,28 +22,50 @@ const skills = [
         name: 'Coding Assistant',
         description: 'Yüksek kaliteli kod üretimi ve hata ayıklama uzmanı.',
         icon: 'code',
-        badge: 'ACTIVE'
+        emoji: '💻',
+        category: 'Development',
+        badge: 'ACTIVE',
+        status: 'READY'
     },
     {
         id: 'research-pro',
         name: 'Research Pro',
         description: 'Derinlemesine internet araştırması ve veri sentezi.',
         icon: 'search',
-        badge: 'ACTIVE'
+        emoji: '🔍',
+        category: 'Research',
+        badge: 'ACTIVE',
+        status: 'ONLINE'
     },
     {
         id: 'system-architect',
         name: 'System Architect',
         description: 'Karmaşık sistem mimarileri ve optimizasyon.',
         icon: 'layers',
-        badge: 'ACTIVE'
+        emoji: '🏗️',
+        category: 'Architecture',
+        badge: 'ACTIVE',
+        status: 'READY'
+    },
+    {
+        id: 'neural-researcher',
+        name: 'Neural Researcher',
+        description: 'Sinirsel ağlar üzerinden derin veri madenciliği.',
+        icon: 'cpu',
+        emoji: '🧠',
+        category: 'AI',
+        badge: 'ACTIVE',
+        status: 'SYNCING'
     },
     {
         id: 'security-guard',
         name: 'Security Guard',
         description: 'Güvenlik analizi ve açık tarama protokolleri.',
         icon: 'shield',
-        badge: 'STANDBY'
+        emoji: '🛡️',
+        category: 'Security',
+        badge: 'STANDBY',
+        status: 'IDLE'
     }
 ];
 
@@ -52,7 +74,7 @@ let model;
 if (GEMINI_API_KEY) {
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-3-flash-preview",
         systemInstruction: "Sen Nexus AI, profesyonel bir araştırmacı ve geliştiricisin. Sana entegre edilmiş 'Coding Assistant', 'Research Pro' ve 'System Architect' gibi becerilere (skills) sahipsin. Kullanıcı ne sorarsa sorsun, bu becerilerini kullanarak internet üzerinde derinlemesine araştırma yapmalı ve en doğru yanıtı vermelisin. Yanıtlarında mutlaka ilgili kaynak linklerini paylaşmalısın. Eğer bir web sitesi veya uygulama hazırlaman istenirse, HTML/CSS/JS kodlarını [PROJECT_DATA]...[/PROJECT_DATA] etiketleri içerisine yerleştir.",
         tools: [
             {

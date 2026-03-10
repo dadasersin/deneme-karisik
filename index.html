@@ -69,7 +69,7 @@
 
                     <main class="main-content">
                         <header class="top-bar glass">
-                            <div class="status-indicator">
+                            <div class="status-indicator neural-pulse">
                                 <span class="dot pulse"></span>
                                 <span>Sinirsel Arayüz Aktif</span>
                             </div>
@@ -235,30 +235,61 @@
                             <!-- KULLANIM KILAVUZU -->
                             <section id="tab-guide" class="tab-content hidden">
                                 <div class="card glass guide-card">
-                                    <h3>KULLANIM KILAVUZU</h3>
+                                    <div class="card-header">
+                                        <i data-lucide="book-open"></i>
+                                        <h3>SİSTEM KULLANIM REHBERİ</h3>
+                                    </div>
                                     <div class="guide-content">
-                                        <div class="guide-item">
-                                            <h4>📊 Panel</h4>
-                                            <p>Sistemin genel sağlık durumunu, işlemci yükünü ve aktif hedefleri takip
-                                                ettiğiniz merkezdir.</p>
+                                        <div class="guide-section">
+                                            <h4>📊 Panel (Ana Ekran)</h4>
+                                            <p>Sistemin kalbidir. Burada aşağıdaki metrikleri takip edebilirsiniz:</p>
+                                            <ul>
+                                                <li><strong>Beyin Kapasitesi:</strong> AI'nın işlem gücü kullanımını gösterir.</li>
+                                                <li><strong>Sinir Sistemi:</strong> Veri akış ağlarının stabilitesini simüle eder.</li>
+                                                <li><strong>Sinirsel Bellek:</strong> Geçmişteki sohbetlerinizin kısa bir özetini burada bulabilirsiniz. Her yeni mesaj bu listeye eklenir.</li>
+                                                <li><strong>Aktif Hedefler:</strong> Sistemin üzerinde çalıştığı mevcut optimizasyon görevleri.</li>
+                                            </ul>
                                         </div>
-                                        <div class="guide-item">
-                                            <h4>🧠 Nexus AI</h4>
-                                            <p>Yapay zeka ile doğrudan etkileşim kurduğunuz bölümdür. Analiz, kodlama ve
-                                                veri işleme taleplerinizi buraya yazabilirsiniz.</p>
+
+                                        <div class="guide-section">
+                                            <h4>🧠 Nexus AI (Sohbet)</h4>
+                                            <p>Yapay zeka ile ana iletişim kanalıdır. Nexus AI şu yeteneklere sahiptir:</p>
+                                            <ul>
+                                                <li><strong>Gerçek Zamanlı Araştırma:</strong> Google Search entegrasyonu sayesinde güncel bilgilere ulaşır.</li>
+                                                <li><strong>Referanslı Yanıt:</strong> Bulduğu bilgileri doğrulamak için yanıtların altına tıklanabilir kaynak linkleri ekler.</li>
+                                                <li><strong>Kod Üretimi:</strong> Yazılım projeleri oluşturabilir ve bunları otomatik olarak sisteme entegre edebilir.</li>
+                                            </ul>
                                         </div>
-                                        <div class="guide-item">
-                                            <h4>⚡ Beceriler</h4>
-                                            <p>AI asistanın sahip olduğu özel uzmanlık alanlarını (Kodlama, Araştırma, Analiz) yönetin.</p>
+
+                                        <div class="guide-section">
+                                            <h4>⚡ Beceriler (Skills)</h4>
+                                            <p>Nexus'un sahip olduğu özel uzmanlık modülleridir. <strong>Coding Assistant</strong>, <strong>Research Pro</strong> ve <strong>System Architect</strong> gibi aktif beceriler, taleplerinizi daha hassas işlemesini sağlar.</p>
                                         </div>
-                                        <div class="guide-item">
-                                            <h4>💻 Terminal</h4>
-                                            <p>Sistem loglarını izleyin ve doğrudan çekirdek komutları çalıştırın.</p>
+
+                                        <div class="guide-section">
+                                            <h4>💻 Neural Terminal</h4>
+                                            <p>Sistemi komut satırı üzerinden yönetmenizi sağlar. Kullanabileceğiniz temel komutlar:</p>
+                                            <ul>
+                                                <li><code>status</code>: Sistemin anlık durumunu, CPU yükünü ve bağlantı hızını gösterir.</li>
+                                                <li><code>skills</code>: Mevcut aktif becerileri listeler.</li>
+                                                <li><code>help</code>: Yardım menüsünü görüntüler.</li>
+                                                <li><code>clear</code>: Terminal ekranını temizler.</li>
+                                            </ul>
                                         </div>
-                                        <div class="guide-item">
+
+                                        <div class="guide-section">
+                                            <h4>📂 Projeler</h4>
+                                            <p>Nexus AI'dan bir web sitesi veya uygulama (örneğin: "Bana bir hava durumu sitesi kur") istediğinizde, oluşturulan kodlar burada listelenir. Her projeyi <strong>ÖNİZLEME</strong> butonuyla görebilir veya <strong>KODU AL</strong> butonuyla bilgisayarınıza indirebilirsiniz.</p>
+                                        </div>
+
+                                        <div class="guide-section">
+                                            <h4>💬 Nexus Mini</h4>
+                                            <p>Ekranın sağ alt köşesindeki yüzen butondur. Hangi sekmede olursanız olun Nexus ile hızlıca mesajlaşmanıza olanak tanır.</p>
+                                        </div>
+
+                                        <div class="guide-section">
                                             <h4>🔐 Güvenlik</h4>
-                                            <p>Sistem başlangıcında istenen '0000' anahtarı, yetkisiz erişimleri
-                                                engelleyen protokolün bir parçasıdır.</p>
+                                            <p>Sisteme erişmek için başlangıçta istenen varsayılan anahtar <code>0000</code>'dır. Bu anahtar sinirsel ağların yetkisiz kişilerce tetiklenmesini engeller.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -269,7 +300,7 @@
 
                 <div class="bezel-bottom">
                     <div class="bolt"></div>
-                    <div class="status-indicator">SYSTEM_ONLINE_STABLE</div>
+                    <div class="status-indicator neural-pulse">SYSTEM_ONLINE_STABLE</div>
                     <div class="bolt"></div>
                 </div>
             </div>
